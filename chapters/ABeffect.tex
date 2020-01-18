@@ -1,0 +1,113 @@
+\chapter{A photonic Aharonov-Bohm effect}
+
+\section{Mach-Zehnder interferometer}
+
+\section{Reduction of device complexity}
+To demonstrate non-reciprocal propagation we simulate the structure of figure 
+\begin{figure}[t]
+\centering
+\setlength{\figH}{1\textwidth}
+\setlength{\figW}{1\textwidth}
+\input{graphs/fangcavity/cavity.tex}
+\caption[The modulated waveguide structure]{The modulated waveguide structure. The dark blue region is a material of unity permeability and permittivity of $\epsilon_{wg} = 12.25$. The light blue sections are regions where the permittivity is modulated by an amount $0.1 \epsilon_{wg} \cos(\omega t + \phi)$, with $\phi=0$ on the left and $\phi=\frac{\pi}{2}$ on the right. The modulation region is chosen to only cover the upper half of the waveguide to maximise the coupling. The diagonal lines around the edges represent the \textit{PML} layer, marking the point where the fields effectively decay to zero. Note that the layer width is constant across the \textit{x} and \textit{y} directions. The red line indicates the region over which the modal source is injected, in this case, from left to right (LR).}
+\label{fig:cavity}
+\end{figure}
+
+
+                    
+\begin{figure}[t]
+    \centering
+    \setlength{\figH}{1\textwidth}
+	\setlength{\figW}{1\textwidth}
+	\input{graphs/fangcavity/LR/fieldfang.tex}
+    \caption{LR \textbf{a)} The modal field profiles of the transverse electric field $E_z$ propagating along the length of the waveguide structure. Each graph represents a sideband of the original frequency $\omega_0$ separated by integer multiples of the modulation frequency $n \Omega$. \textbf{b)} The corresponding amplitudes of each mode sideband along the structure as calculated theoretically (orange) and through the simulation (blue).}
+    \label{fig:LRFang}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \setlength{\figH}{1\textwidth}
+	\setlength{\figW}{1\textwidth}   
+	\input{graphs/fangcavity/RL/fields.tex}
+    \caption[Broken parity-reversal symmetry in the modulated structure]{RL}
+    \label{fig:RLFang}
+\end{figure}
+    
+\begin{figure}[t]
+    \centering
+    \setlength{\figH}{\textwidth}
+	\setlength{\figW}{1\textwidth}
+	\input{graphs/fangcavity/TR/fields.tex}
+    \caption[Broken time-reversal symmetry in the modulated structure]{Non-reciprocal propagation under a time-reversed operation. Light of mode $\ket{2}$ is injected from the RL direction, mimicking a time-reversal operation (since the original LR direction of mode $\ket{1}$ completely transforms to $\ket{2}$. Since TR-symmetry is broken, even after propagating through the modulated structure the mode does not transition back to $\ket{1}$. Note how the field profile at $\omega_0-\Omega$ exists as a superposition of several modes, since it does not have an allowed solution on the band-structure.}
+    \label{fig:TRFang}
+\end{figure}    
+
+In figures \ref{fig:LRFang, RLFang, TRFang} we see an excellent agreement between the transfer matrix formalism and the simulations. Importantly, we note complete TR and PT-symmetry breaking, implying total non-reciprocal mode conversion. Of interesting consequence is the generation of an additional sidebands at frequencies that are not defined in the band-structure ($\omega_0-\Omega$ and $\omega_0 - 2\Omega$). As such, the field is distributed as a \textit{superposition} of several possible transverse electric modes, which can be safely neglected owing to their low modal amplitude. These spurious modes are `leaky', implying the superposition contains modes close to or above the light cone of the band-structure. However, the existence of the leaky modes gives insight into the amount of energy lost as a result of modulation. There are an effectively infinite number of sidebands generated during modulation ($\omega_0 \pm n \Omega$), however in figures IIIII we plot the maximum modal amplitude of each sideband, showing that the amplitude of the extra sidebands effectively drops to 0. 
+
+The solution of the coupled mode equation can be expressed by a transfer matrix $T(\phi)$, which relates the mode amplitudes $a'_n(z) = a_n(z)e^{-ikz}$ at the positions of $z$ and $0$,
+
+\begin{equation}
+\begin{bmatrix}
+a'_1(z) \\
+a'_2(z)
+\end{bmatrix}
+= T(\phi)
+\begin{bmatrix}
+a'_1(0) \\
+a'_2(0)
+\end{bmatrix}
+\end{equation}
+
+where the transfer matrix is given by 
+
+\begin{equation}
+T(\phi) = e^{-ikz} \begin{bmatrix}
+\cos(Cz) & ie^{-i\phi} \sin(Cz) \\
+ie^{i\phi} \sin(Cz) & \cos(Cz) .
+\end{bmatrix}
+\end{equation}
+
+The coupled mode equation corresponds to a Hamiltonian $H = Ce^{-i\phi} a_1^\dagger a_2 + Ce^{i \phi} a_2^\dagger a_1$. Thus, the phase factor $\phi$ represents a gauge transformation of the system. There is complete arbitrariness in the choice of $\phi$, since it is wholly related to the time origin of the modulation, which naturally can be set at any time. This phase can be used to construct a gauge potential for the system in analogy to a lattice model for an electron. In the absence of a magnetic field, the tight-binding Hamiltonian of an electronic lattice model is given by 
+\begin{equation}
+H = \sum_{r',r} C_{r',r}^0 b_{r'}^\dagger b_r
+\end{equation}
+where $C_{r',r}^0$ is the hopping coefficient between electronic states $b_r$ and $b_r'$. In the presence of a magnetic field described by a gauge potential $\bm{A}(\bm{r})$ the Hamiltonian is modified to the form 
+\begin{equation}
+H' = \sum_{r',r} C_{r',r} b_{r'}^{\dagger} b_r,
+\end{equation}
+
+where now,
+
+\begin{align}
+C_{r',r} &= e^{ie/\hbar} \int_{r}^{r'} \bm{A} \cdot d\bm{l} C_{r',r}^0 \\
+ &= e^{i \phi} C_{r',r}^0.
+\end{align}
+
+Thus, the phase $\phi$ in $C$ is associated with a gauge potential through 
+
+\begin{equation}
+\dfrac{e}{\hbar} \int_{r}^{r'} \bm{A} \cdot d \bm{l} = \phi.
+\end{equation}
+
+Similarly for the photonic system discussed here, we can associate a gauge potential $\bm{A}$ to the phase $\phi$ through the relation
+
+\begin{equation}
+\int_{1}^2 \bm{A} \cdot d \bm{l} = \phi,
+\label{eqn:gauge}
+\end{equation}
+
+where $1$ and $2$ represent the spatial locations of the photonic states $\ket{1}$ and $\ket{2}$ respectively (although quantum mechanical in nature, the spatial locations can usually be defined as simply the center of mass of the photon distribution). Most importantly, since the line integral of equation \ref{eqn:gauge} depends on the direction of propagation, reversing the location of photonic states flips the sign of phase;
+\begin{equation}
+\int_{2}^1 \bm{A} \cdot d \bm{l} = -\phi.
+\end{equation}
+
+It is worth pointing out that all operations on the photon modes belong to the group of complex unitary ($U^\dagger = U^{-1}$) $2 \times 2$ matrices with determinant $1$ (known as special unitary SU(2)). However, the gauge transformation is connected to the arbitrariness in setting a single relative phase factor between the components of states $\ket{1}$ and $\ket{2}$. Since there is only a single such phase factor, the corresponding gauge degree of freedom has only U(1) (group of complex unitary $1 \times 1$ matrices) symmetry. 
+
+\begin{figure}[t]
+	\centering
+	\setlength{\figH}{0.4\textwidth}
+	\setlength{\figW}{0.7\textwidth}
+	\input{graphs/banddiagram/1.1and12.25.tex}
+	\caption[Band diagram of a waveguide of width $1.1 a$ and permittivity $12.25$.]{Band diagram of a waveguide with width $1.1 a$ and permittivity $12.25$. Green dashes indicate dispersions obtained through \textit{MPB}, whereas blue lines indicate those calculated analytically using the purpose-written solver (appendix A). The black line is the light line ($\omega = ck$), modes existing to the left of this line are no longer guided. Although \textit{MPB} and the solver disagree in regions close to or outside the light line, this is largely irrelevant as all modes will be chosen to be guided. The red line is the direct transition between modes $\ket{1}$ and $\ket{2}$ (such that the wave vector is conserved).}
+	\label{fig:banddiagram}
+\end{figure}

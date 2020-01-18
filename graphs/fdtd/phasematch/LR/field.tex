@@ -1,0 +1,93 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.35\figW,
+height=0.2\figH,
+at={(0\figW,0.75\figW)},
+scale only axis,
+point meta min=-1,
+point meta max=1,
+axis on top,
+clip=false,
+xmin=0,
+xmax=10,
+ymin=0,
+ymax=1,
+xlabel = {x ($\mu m$)},
+ytick={0,0.5,1},
+yticklabels={$0$,$0.5$, $1$},
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+colorbar,
+colorbar style={width=.02\linewidth, at={(1.05,0.1\figH)}, anchor=east,ytick={-1,1}},
+colorbar style={title={$V / \mu m$}}
+]
+\addplot graphics [xmin=0, xmax=10, ymin=0, ymax=1] {graphs/fdtd/phasematch/LR/field-1.png};
+\node at (-1,2) {\textbf{(a)}};
+\node at (2,1.2) {$\ket{1} \rightarrow$};
+\node at (8,1.2) {$\rightarrow \ket{2}$};
+\end{axis}
+
+\begin{axis}[%
+width=0.35\figW,
+height=0.2\figH,
+at={(0\figW,0.5\figW)},
+scale only axis,
+point meta min=-1,
+point meta max=1,
+axis on top,
+xmin=0,
+clip=false,
+xmax=10,
+ymin=0,
+ymax=1,
+xlabel = {x ($\mu m$)},
+ytick={0,0.5,1},
+yticklabels={$0$,$0.5$, $1$},
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+colorbar,
+colorbar style={width=.02\linewidth, at={(1.05,0.1\figH)}, anchor=east,ytick={-1,1}}
+]
+\addplot [forget plot] graphics [xmin=0, xmax=10, ymin=0, ymax=1] {graphs/fdtd/phasematch/RL/fieldRL-1.png};
+\node at (-1,2) {\textbf{(b)}};
+\node at (2,1.2) {$\bra{1} \leftarrow$};
+\node at (8,1.2) {$\leftarrow \bra{1}$};
+\end{axis}
+
+\begin{axis}[%
+width=0.35\figW,
+height=0.2\figH,
+at={(0\figW,0.25\figW)},
+scale only axis,
+point meta min=-1,
+point meta max=1,
+axis on top,
+xmin=0,
+xmax=10,
+ymin=0,
+ymax=1,
+ytick={0,0.5,1},
+clip=false,
+xlabel = {x ($\mu m$)},
+yticklabels={$0$,$0.5$, $1$},
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+colorbar,
+colorbar style={width=.02\linewidth, at={(1.05,0.1\figH)}, anchor=east,ytick={-1,1}}
+]
+\addplot [forget plot] graphics [xmin=0, xmax=10, ymin=0, ymax=1] {graphs/fdtd/phasematch/TR/fieldTR-1.png};
+\node at (-1,2) {\textbf{(c)}};
+\node at (2,1.2) {$\bra{2} \leftarrow$};
+\node at (8,1.2) {$\leftarrow \bra{2}$};
+\end{axis}
+\end{tikzpicture}%

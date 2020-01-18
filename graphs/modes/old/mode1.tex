@@ -1,0 +1,60 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\figW,
+height=0.4\figH,
+at={(0\figW,0.5\figH)},
+scale only axis,
+point meta min=-98.2680517892277,
+point meta max=98.2680517892277,
+axis on top,
+xmin=0,
+xmax=5,
+xlabel style={font=\color{white!15!black}},
+xlabel={$\text{x (}\mu\text{m)}$},
+ymin=0,
+ymax=5,
+ylabel style={font=\color{white!15!black}},
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+%colorbar
+]
+\addplot [forget plot] graphics [xmin=0, xmax=5, ymin=0, ymax=5] {graphs/modes/mode1-1.png};
+\draw (0,1.95) -- (5,1.95);
+\draw (0,3.05) -- (5,3.05);
+\draw (0.22,0.21) -- (0.22,4.8);
+\end{axis}
+
+\begin{axis}[%
+width=0.8\figW,
+height=0.4\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+point meta min=-0.00798977562484028,
+point meta max=0.00798977562484028,
+axis on top,
+xmin=0,
+xmax=5,
+xlabel style={font=\color{white!15!black}},
+xlabel={$\text{x (}\mu\text{m)}$},
+ymin=0,
+ymax=5,
+ylabel style={font=\color{white!15!black}},
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+%colorbar
+]
+\addplot [forget plot] graphics [xmin=0, xmax=5, ymin=0, ymax=5] {graphs/modes/mode2-1.png};
+\draw (0,1.95) -- (5,1.95);
+\draw (0,3.05) -- (5,3.05);
+\draw (0.22,0.21) -- (0.22,4.8);
+\end{axis}
+\end{tikzpicture}%

@@ -1,0 +1,32 @@
+
+\begin{tikzpicture}
+    \begin{axis}[%
+width=0.9\figW,
+height=0.15\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+axis on top,
+xmin=0,
+xmax=60,
+xlabel={$\text{x (}\mu\text{m)}$},
+ymin=0,
+ymax=5,
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+]
+\fill[fill=eps] (0,1.95) rectangle (60,3.05);
+\fill[fill=eps] (24.2,1.5) rectangle (35.8,3.5);
+\fill[fill=modup] (5.2,2.5) rectangle (24.2,3.05);
+\fill[fill=moddown] (35.8,2.5) rectangle (54.8,3.05);
+\draw (0,1.95) -- (24.2,1.95) -- (24.2,1.5) -- (35.8,1.5) -- (35.8,1.95) -- (60,1.95);
+\draw (0,3.05) -- (24.2,3.05) -- (24.2,3.5) -- (35.8,3.5) -- (35.8,3.05) -- (60,3.05);
+\draw[draw=src, line width=0.5mm] (1.5,0.8) -- (1.5,4.2);
+\draw[line width=0.5mm, draw=src, ->] (2,4) -- (5,4);
+\draw[line width=0.5mm, draw=src, ->] (2,1) -- (5,1);
+\draw[dashed, draw=red, line width=0.7mm] (5.2,2.5) -- (5.2,3.05) -- (24.2,3.05) -- (24.2,2.5) -- (5.2,2.5);
+\draw[dashed, draw=red, line width=0.7mm] (35.8,2.5) -- (35.8,3.05) -- (54.8,3.05) -- (54.8,2.5) -- (35.8,2.5);
+\node at (15,4) {$\phi(x_1)$};
+\node at (45,4) {$\phi(x_2)$};
+\node at (30,4) {$T_f$};
+\end{axis}
+\end{tikzpicture}

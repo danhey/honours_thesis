@@ -1,0 +1,24 @@
+\vspace*{0.25\linewidth}
+\begin{tikzpicture}
+%\node at (-1,5.5) {\textbf{b)}};
+\draw[step=4cm,color=black] (0,0) grid (4,4);
+\draw[draw=mode3,thick,dashed] (2,2) circle (2cm);
+%\draw[thick,->,color=black] (0,0) -- (4.5,0) node[anchor=north] {x};
+%\draw[thick,->,color=black] (0,0) -- (0,4.5) node[anchor=east] {y};
+\draw[line width=0.7mm,->,draw=mode2] (2,0) -- (3,0) node[anchor=north east] {$\color{mode2} H_x^{i,j}$};
+\draw[line width=0.7mm,->,draw=mode2] (2,4) -- (3,4) node[anchor=north east] {$\color{mode2} H_x^{i,j+1}$};
+\draw[line width=0.7mm,->,draw=mode2] (0,2) -- (0,3) node[anchor=north west] {$\color{mode2} H_y^{i,j}$};
+\draw[line width=0.7mm,->,draw=mode2] (4,2) -- (4,3) node[anchor=north east] {$\color{mode2} H_y^{i+1,j}$};
+
+
+\draw[line width=0.5mm,->,draw=mode1] (2,2) circle (0.1cm) node[anchor=north west] {$\color{mode1} E_z^{i,j}$};
+
+\draw (0,-1) -- (4,-1);
+\draw (0,-1) -- (0,-0.75);
+\draw (4,-1) -- (4,-0.75);
+\node at (2,-1.5) {$\Delta x$};
+\draw (-0.5,0) -- (-0.5,4);
+\draw (-0.5,0) -- (-0.4,0);
+\draw (-0.5,4) -- (-0.4,4);
+\node at (-1,2) {$\Delta y$};
+\end{tikzpicture}

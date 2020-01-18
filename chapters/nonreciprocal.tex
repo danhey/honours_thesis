@@ -1,0 +1,263 @@
+\chapter{Simulation results and discussion}
+\label{chapter:results}
+
+In this chapter, the results of applying the MF-FDFD method are presented to demonstrate non-reciprocity in modulated waveguides. `$a$' is used regularly in the units of frequency, and is a normalisation constant which allows the simulation to be scaled to any size, a common procedure in electromagnetic simulations. For all results presented here, $a = 1  \mskip3mu \mu m$.
+
+\section{Numerical validation of FDFD}
+
+As a preliminary verification of the MF-FDFD implementation, an identical simulation to the time-domain one of Section \ref{sec:demonstration} is calculated over one sideband. The waveguide is again of width $1.1 \mskip3mu \mu m$ and length $23  \mskip3mu \mu m$, with a modulation of $\epsilon'(t) = 0.1 \cos (\omega t)$ applied between $2$ to $21  \mskip3mu \mu m$. The upper and lower halves of the waveguide are modulated with a $\pi$ phase difference, and the waveguide is injected with a modal source at $1  \mskip3mu \mu m$ of frequency $0.129  \mskip3mu (2 \pi c/a)$. The amplitude of the modes are extracted along the length of the modulation region, and compared to the results of FDTD. As an additional benefit to the FDFD method, the field evolution of the mode can be visualised completely, as in Figures \ref{sfig:mode1} and \ref{sfig:mode2}. 
+
+There is excellent agreement between FDFD and FDTD as seen in Figure \ref{sfig:coherence}. Both simulations predict the characteristic minor oscillations during modulations, however FDTD predicts that power is lost at a faster rate. This is likely because the FDFD simulation will only operate over the number of sidebands specified. Since small amounts of power are naturally lost to higher order sidebands, the frequency domain simulation can not completely predict the modal variation. However, it is worth pointing out that both simulations perfectly agree on the convergence of the coherence length at $19 \mskip3mu  \mu m$. 
+
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}{\textwidth}
+		\centering
+		\setlength{\figH}{0.3\textwidth}
+		\setlength{\figW}{\textwidth}
+		\input{graphs/fdfd/reciprocal/ampcompare.tex}
+		\phantomsubcaption%
+		\label{sfig:coherence}%
+	\end{subfigure}
+	\setlength{\figH}{0.3\textwidth}
+	\setlength{\figW}{0.4\textwidth}
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\input{graphs/fdfd/reciprocal/mode1.tex}
+		\phantomsubcaption%
+		\label{sfig:mode1}%
+	\end{subfigure}%
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\input{graphs/fdfd/reciprocal/mode2.tex}
+		\phantomsubcaption%
+		\label{sfig:mode2}%
+	\end{subfigure}
+	\caption[Comparison of mode transition for FDTD and FDFD]{\textbf{(a)} Amplitude of both modes $\ket{1}$ and $\ket{2}$ for the time and frequency domain simulations, with the time domain in dashed lines. \textbf{(b)}Mode evolution of $\ket{1}$ as it propagates through the waveguide, and likewise for \textbf{(c)} $\ket{2}$. Note how $\ket{1}$ completely vanishes after reaching the coherence length.}
+	\label{fig:coherencelength}
+\end{figure} 
+
+
+\subsection{Direct validation through coupled-mode theory}
+
+The finite difference method simulates modes over any number of given sidebands. However, the implementation of the time domain method provided here is incapable of extracting these sidebands. Thus, to independently verify the frequency domain implementation, a simulation of a dynamically modulated waveguide over several sidebands is performed and compared to coupled-mode theory. Since the previously shown coupled mode-theory assumes only transitions between two modes (Equation \ref{eqn:theorymode}), a differential equation that describes transitions between $n$ modes is derived in Appendix \ref{app:cmt}. This allows for the comparison of the MF-FDFD implementation against a semi-analytic result.
+
+The simulation considers a slab waveguide of relative permittivity $\epsilon= 4$ surrounded by vacuum in a region $10 \times 4  \mskip3mu \mu m$ discretised to $\Delta = 0.04 \mskip3mu  \mu m$. The waveguide is $10  \mskip3mu \mu m$ long and $0.75  \mskip3mu \mu m$ wide, which leads to a choice of an even mode of $\omega_1 = 0.667  \mskip3mu (2\pi c/a)$ at $k_1 = 0.841 \mskip3mu  (2\pi /a)$ and an odd mode at $\omega_2 = 0.645 \mskip3mu  (2\pi c/a)$ and $k_2 = 1.097 \mskip3mu  (2\pi /a)$. A permittivity modulation of $0.1 \epsilon_0 \cos(\Omega t)$ is applied between $1.5$ and $9 \mskip3mu  \mu m$, where the top and bottom halves of the waveguide are modulated with a $\pi$ phase difference to maximise coupling. This weak choice of modulation is insufficient to transition a mode, however coupled mode theory becomes exact in the limit of small modulations. Thus, it is perfectly suited to analysing the response of FDFD. The simulation is truncated to 5 frequency sidebands for $\omega_n = \omega_1 + n \Omega$ where $n \in [-4,4]$, and a continuous wave input of the first mode is excited at location $1 \mskip3mu  \mu m$ using the standard solver, whose power is normalised to $1  \mskip3mu W \mu m^{-1}$. For each frequency sideband the amplitude of the mode is extracted and compared to the semi-analytic results provided by the coupled-mode theory equation \ref{eqn:cmttheory}.
+
+The maximum $|E_z|^2$ field at each sideband $\omega_n$ is first extracted and shown in figure \ref{fig:sideamp}. At the initial band $\omega_1$, the field amplitude is normalised to unity. The fields exponentially decrease with $|n|$. However, the higher sidebands decrease at a slower rate than that of the negative sidebands. Importantly, this means that the impact of reducing the sideband count in the simulation is minimal for a weak modulation. Since the final fields are the sum of each field component at all the sidebands calculated, any missing sidebands will lead to a slight inaccuracy in the final result. Here, the combined second sideband frequencies have a maximum amplitude of less than $0.0001 \% $ of the initial mode.
+
+\begin{figure}[t]
+	\centering
+	\setlength{\figH}{\textwidth}
+	\setlength{\figW}{\textwidth}
+	\input{graphs/weakmod/weakampside.tex}
+	\caption[Maximum $|E_z(\omega_n)|$ field amplitude at each sideband $n$.]{The maximum field amplitude calculated for each sideband $n$ on a log scale. The field intensity decreases exponentially with $n$. Note that the amplitude of the sidebands is not symmetric about $n=0$.}
+	\label{fig:sideamp}
+\end{figure}
+
+The results of the simulation for the modal profile and corresponding amplitudes in each mode are shown in Figure \ref{fig:weakMod}. There is an excellent agreement between CMT and FDFD in Figure \ref{sfig:cmtcompare}. However, FDFD shows minor oscillations along the length of the waveguide that CMT can not predict, identical to the oscillations in previous simulations with only temporal modulations. By performing a standard Fourier transform on the modal amplitude at frequency sideband $\omega_1+\Omega$, the minor oscillation is found to be at a period of $T=0.075  \mskip3mu \mu m$. This period corresponds exactly to the generation of backward propagating modes, $0.075  \mskip3mu \mu m = 1/(k_1+k_2)$.
+
+
+\begin{figure}[h!]
+	\centering
+	\setlength{\figH}{1\linewidth}
+	\setlength{\figW}{1\textwidth}
+	\begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/weakmod/weakmod.tex}
+		\phantomsubcaption
+		\label{sfig:weakmod}
+	\end{subfigure}%
+	\begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/weakmod/weakampFINAL.tex}
+		\phantomsubcaption
+		\label{sfig:cmtcompare}
+	\end{subfigure}
+	\caption[Electric field profiles for the weakly modulated waveguide]{\textbf{(a)} The modal field profiles of the transverse electric field $E_z$ propagating along the length of the waveguide structure. Each graph represents a sideband of the original frequency $\omega_1$ separated by integer multiples of the modulation frequency $n \Omega$. \textbf{(b)} The corresponding modal amplitudes of each sideband along the structure as calculated theoretically via CMT (dashed) and through the FDFD simulation (solid). }
+	\label{fig:weakMod}
+\end{figure}
+
+\newpage
+
+\section{Non-reciprocal mode conversion through indirect transitions}
+\label{nonrec}
+\begin{figure}[b!]	
+	\centering
+	\setlength{\figH}{\textwidth}
+	\setlength{\figW}{\textwidth}
+	\input{graphs/fdtd/phasematch/band.tex}
+	\caption[Dispersion for a waveguide of width $0.22  \mskip3mu \mu m$ and relative permittivity $12.25$.]{Dispersion relation for the waveguide of width $0.22  \mskip3mu \mu m$ and relative permittivity $\epsilon=12.25$, compared between the analytic solver and the open-source \textit{MPB}.}
+	\label{fig:bandfinal}
+\end{figure} 
+
+Having extensively validated the implementation of the frequency domain method, non-reciprocal mode transition is now demonstrated for a spatio-temporal direct permittivity modulation. The simulation is chosen to be a thin slab dielectric waveguide of width $0.22  \mskip3mu \mu m$ and permittivity $\epsilon = 12.25$, corresponding to that of silicon. This particular waveguide is chosen as it possesses highly parallel bands in the dispersion relation (Fig \ref{fig:bandfinal}). Being parallel, there will almost always be a phase-matched pair of modes in the forward ($+k$) direction. So that for any even mode $\ket{1}$, a single modulation profile will ensure a transition to a corresponding odd mode $\ket{2}$ over a wide range of frequencies. This is ideal from an optical isolation point of view, which requires an ideally infinite frequency operation range. Likewise, in the backward propagating direction ($-k$), there is no single phase-matched pair of modes for a transition. Thus, a single modulation between the even and odd modes on this choice of waveguide provides highly \textit{broadband} optical isolation.
+
+The simulation is run for an even and odd mode pair at frequencies $\omega_1 = 0.647 \mskip3mu  (2 \pi c/a)$ and $\omega_2 = 0.8879 \mskip3mu  (2\pi c/a)$ respectively, chosen from the calculated dispersion relation of Figure \ref{fig:bandfinal}. These modes have corresponding wavevectors $k_1 = 1.189 \mskip3mu  (2 \pi /a)$ and $k_2 = 0.912  \mskip3mu (2 \pi/a)$. A permittivity modulation of the form $\epsilon(x,t)' = \delta \cos (\Omega t + \Lambda x)$ is applied between $2.5  \mskip3mu \mu m$ and $7.5  \mskip3mu \mu m$ ($L_c = 5  \mskip3mu \mu m$) where $\Omega = \omega_2-\omega_1$ is the modulation frequency and $\Lambda = k_2 - k_1$. The upper and lower halves of the waveguide have a $\pi$ phase difference. The coherence length was determined by extending the modulation over a wider range and sampling the mode amplitudes as usual, with a strong modulation of $\delta = 1$. A modal source is excited at $1  \mskip3mu \mu m$, and frequencies are extracted at positions $D_1 = 1.5 \mskip3mu  \mu m$ and $D_2 = 9 \mskip3mu  \mu m$ over 5 sidebands at a spatial discretisation of $\Delta = 0.04  \mskip3mu \mu m$.
+
+%\input{graphs/fdtd/phasematch/coherence.tex}
+Figure \ref{fig:bandyu} shows the results of the simulation for the forward, backward, and time-reversed simulations. Only the total combined field of all sidebands is shown ($\sum E_z(\omega_n)$), as opposed to each individual sideband. The system exhibits a strongly non-reciprocal response - on the left to right path, the mode completely converts from $\ket{1}$ to $\ket{2}$. However, on the right to left direction the modulation does not cause a transition since there is no corresponding point on the dispersion relation for the mode to `jump'. Similarly, on the time-reversed path the modulation does not transition the odd mode to the second even mode (the third band on the dispersion relation). These non-reciprocal mode conversions can be removed using standard modal filters, allowing for complete isolation \cite{Lee2003,Jiao2005}.
+
+\begin{figure}[t]
+	\centering
+	\setlength{\figH}{0.4\textwidth}
+	\setlength{\figW}{\textwidth}
+	\begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/fdtd/phasematch/LR/field.tex}
+	\end{subfigure}%
+	\begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/fdtd/phasematch/LR/LRfourier.tex}
+	\end{subfigure}
+	\caption[Non-reciprocal frequency conversion in a strongly modulated waveguide]{Phase matched non-reciprocal mode conversion in a modulated structure for \textbf{a)} LR, \textbf{b)} LR, and \textbf{c)} TR directions. On the left are the $E_z$ fields, and on the right are the corresponding frequencies for detectors $D_1$ and $D_2$. Note that in all the Fourier graphs, results are shown for both detectors. However, in the case of the $RL$ and $TR$ directions, the input and output are identical.}
+	\label{fig:bandyu}
+\end{figure} 
+
+
+\section{Optical isolation through a photonic AB effect}
+\label{sec:opticAB}
+
+\begin{figure}[t!]
+	\centering
+	\setlength{\figH}{1\textwidth}
+	\setlength{\figW}{1\textwidth}
+	\input{graphs/fangcavity/cavity.tex}%
+	\caption[Waveguide for demonstrating a photonic AB effect]{The modulated waveguide structure for demonstrating a photonic Aharonov-Bohm effect. The dark blue region is a material of unity permeability and relative permittivity $\epsilon = 12.25$. The light blue sections enclosed in dashed red lines are regions where the permittivity is modulated by an amount $0.1 \epsilon \cos(\omega t + \phi)$, with $\phi(x_1)$ on the left and $\phi(x_2)$ on the right. The green line indicates the region over which the modal source is injected, in this case, from left to right (LR). The central waveguide imparts a mode-dependent phase on light passing through it, described by the transfer matrix $T_f$.}%
+	\label{fig:abcavity}
+\end{figure}
+
+The difficulty in applying spatio-temporal modulations for the purpose of optical isolation is that the spatial dependence of the modulation is highly difficult to engineer. Currently, such modulations are created by simultaneously controlling the permittivity of hundreds of discrete points in a waveguide at different phases. However, without the wavevector shift the mode transition is purely reciprocal, as modes propagating in the reverse direction are still phase-matched (the transition on the dispersion relation is completely vertical, and so the modulation does not discriminate between left and right propagating modes). Here, based on the work of Fang et al. \cite{Fang2012}, a broadband tunable optical isolator is constructed and simulated in the frequency domain using only the gauge potential that emerges from the phase of \textit{temporal} dynamic modulations, as discussed in Section \ref{sec:gauge}. The choice of a direct transition marks the ideal configuration for a modulation, as only two separate regions need to be modulated with no spatial dependence.
+
+Consider first the structure of Figure \ref{fig:abcavity}, which consists of a single narrow waveguide connected to a central waveguide region. The narrow waveguide supports an even and odd mode $\ket{1}$ and $\ket{2}$ respectively. A modulation of the form
+\begin{equation}
+\epsilon(t)' = \delta \cos (\Omega t + \phi(x_1))
+\end{equation}
+is applied on the left side of the waveguide, and another modulation 
+\begin{equation}
+\epsilon(t)' = \delta \cos (\Omega t + \phi(x_2))
+\end{equation}
+on the right side to induce reciprocal transitions between the modes. The central waveguide region can be chosen to impart a mode-dependent phase on light passing through it, so there are effectively two pathways through which light can propagate. The transfer matrix for modes passing through the central waveguide is then 
+
+\begin{equation}
+T_f =
+\begin{bmatrix}
+e^{i \phi(P_1)} & 0 \\
+0 & e^{i \phi(P_2)} 
+\end{bmatrix}.
+\end{equation}
+
+In the second path ($P_2$), a photon of mode $\ket{1}$ is injected from the left and undergoes a transition to state $\ket{2}$, gaining an additional $\phi(x_1)$ phase. Upon passing through the central region, the photon acquires an additional phase $\phi(P_2)$, and undergoes a transition back to $\ket{1}$ in the second modulated region, gaining a final $-\phi(x_2)$ phase. In the first path ($P_1$), the initial mode is no longer converted and only acquires a $\phi(P_1)$ phase from the central waveguide region.
+
+Thus, the total phase difference between the two pathways is then 
+
+\begin{equation}
+\Delta \phi_{LR} = \phi(P_2) - \phi(P_1) + \phi(x_1) - \phi(x_2).
+\end{equation}
+Likewise, in the right to left direction the total phase difference is instead
+\begin{equation}
+\Delta \phi_{RL} =  \phi(P_2) - \phi(P_1) + \phi(x_2) - \phi(x_1),
+\end{equation}
+which is identical to the discussion of the photonic Aharonov-Bohm effect of Section \ref{sec:opticAB}. In this case, the two modulated regions play the role of the separate interferometer arms, with the path-dependent phase of the central waveguide being equivalent to the phase acquired by an electron passing through a magnetic vector potential $\bm{A}$. 
+
+Because of this, despite the nature of the direct modulation itself being reciprocal, the gauge potential can be designed to generate non-reciprocal phases. In particular, non-reciprocal frequency conversion can be demonstrated without requiring a spatial modulation profile by choosing the phases so that $\phi(x_2)-\phi(x_1) = \pi/2$, and $\phi(P_2) - \phi(P_1) = \pi/2$. To allow for interference between modes, the modulated length is chosen as $L = 0.5 L_c$, so that only half of the mode will transition (50\% of the modal power will transition to the other mode). From these choices, the transfer matrix for modes propagating right to left is then
+
+\begin{equation}
+T_{LR} = T(\phi_2) T_f T(\phi_1) = e^{-i(2kL - \phi(P_1))} 
+\begin{bmatrix}
+0 & i \\
+-1 & 0
+\end{bmatrix},
+\end{equation}
+
+On the other hand, in the right to left direction the transfer matrix is instead given by
+
+\begin{equation}
+T_{RL} = T(\phi_1)T_f T(\phi_2) =  e^{-i(2kL - \phi(P_1))}
+\begin{bmatrix}
+1 & 0 \\
+0 & i
+\end{bmatrix}.
+\end{equation}
+
+From this, an even mode of state $\ket{1}$ injected from the left of the waveguide will completely convert to an odd mode $\ket{2}$, whereas the same even mode injected from the right will remain an even mode.
+
+\begin{figure}[t]
+	\centering
+	\setlength{\figH}{\textwidth}
+	\setlength{\figW}{\textwidth}
+	\input{graphs/banddiagram/1.1and12.25.tex}
+	\caption[Dispersion relation of a waveguide of width $1.1 \mu m$ and relative permittivity $12.25$.]{Dispersion relation of a waveguide with width $1.1 \mu m$ and relative permittivity $12.25$. Green dashes indicate dispersions obtained through \textit{MPB}, whereas blue lines indicate those calculated analytically using the purpose-written solver. The red line is the direct transition between modes $\ket{1}$ and $\ket{2}$. Since the modulation has no spatial dependence, the modulation does not discriminate between forward and backward propagating modes.}
+	\label{fig:banddiagram}
+\end{figure}
+
+
+This is implemented in the frequency domain simulation by choosing the narrow waveguide to be of width $1.1  \mskip3mu \mu m$ extending from $0$ to $60 \mskip3mu  \mu m$, and the central waveguide region to be $2.2  \mskip3mu \mu m$ wide and $11.6 \mskip3mu  \mu m$ long, with relative permittivity $\epsilon = 12.25$. For the narrow waveguide, this choice corresponds to the dispersion relation of Figure \ref{fig:banddiagram}. The direct transition is induced between an even mode $\ket{1}$ chosen at $\omega_1 = 0.129 \mskip3mu (2 \pi c/a)$ and odd mode $\ket{2}$ at $\omega_2 = 0.199  \mskip3mu (2 \pi c/a)$, which share the same wavevector $k_{1,2} = 0.380 \mskip3mu  (2 \pi / a)$. To satisfy the modulation condition for the above transfer matrix, the waveguide is modulated on the left and right by $0.1 \epsilon \cos (\Omega t + \phi)$, with the phase of modulation set at $0$ and $\pi/2$ respectively ($\phi(x_2) - \phi(x_1) = \pi/2$). The choice of width for the central waveguide ($2 \mskip3mu \mu m$) ensures that even and odd modes acquire a $\pi/2$ phase difference upon passing through ($\phi(P_2) - \phi(P_1) = \pi/2$). The length of the modulated regions is half the coherence length ($19  \mskip3mu  \mu m$), so that a mode injected from the left will undergo a 50\% transition to the second mode, and vice versa. To test the non-reciprocal conversion, a modal source is excited at $1  \mskip3mu \mu m$ for the left to right direction, and $59 \mskip3mu  \mu m$ for the right to left and time-reversed directions. The simulation is performed over 3 sidebands at a spatial discretisation of $\Delta = 0.04 \mskip3mu  \mu m$, however only the first set of sidebands are shown.
+
+\begin{figure}[t!]
+	\centering
+	\setlength{\figH}{1\textwidth}
+	\setlength{\figW}{1\textwidth}
+	\input{graphs/fangcavity/LR/fieldfang.tex}
+	\caption[Modal field profiles at each sideband $n$ for the left-to-right direction]{Propagation in the forward (RL) direction for the photonic AB effect. \textbf{(a)} $E_z$ field profiles of the total field, and its separate components in the first sidebands. \textbf{(b)} Corresponding modal amplitudes of each sideband propagating through the modulated region. Mode $\ket{1}$ is completely converted to $\ket{2}$.}
+	\label{fig:LRFang}
+\end{figure}
+
+\begin{figure}[t!]
+	\centering
+	\setlength{\figH}{1\textwidth}
+	\setlength{\figW}{1\textwidth}   
+	\input{graphs/fangcavity/RL/fields.tex}
+	\caption[Modal field profiles at each sideband $n$ for the right-to-left direction]{Non-reciprocal propagation in the RL direction. \textbf{(a)} $E_z$ field profiles of the total field, and its separate components in the first sidebands. \textbf{(b)} Corresponding modal amplitudes of each sideband propagating through the modulated region. Mode $\bra{1}$ remains in state $\bra{1}$, implying a broken PT-symmetry.}
+	\label{fig:RLFang}
+\end{figure}
+
+\begin{figure}[t!]
+	\centering
+	\setlength{\figH}{\textwidth}
+	\setlength{\figW}{1\textwidth}
+	\input{graphs/fangcavity/TR/fields.tex}
+	\caption[Broken time-reversal symmetry in the photonic AB waveguide.]{Non-reciprocal propagation under a time-reversed operation. Light of mode $\bra{2}$ is injected from the RL direction, mimicking a time-reversal operation.\textbf{(a)} $E_z$ field profiles of the total field, and its separate components in the first sidebands. \textbf{(b)} Corresponding modal amplitudes of each sideband propagating through the modulated region. Since TR-symmetry is broken, even after propagating through the modulated structure the mode does not transition back to $\ket{1}$, and instead remains in state $\bra{2}$. Note how the field profile at $\omega_1-2\Omega$ exists as a superposition of several modes, since it does not have an allowed solution on the band-structure.}
+	\label{fig:TRFang}
+\end{figure}   
+\clearpage
+
+In Figures \ref{fig:LRFang},\ref{fig:RLFang}, and \ref{fig:TRFang} there is an excellent agreement between the transfer matrix formalism and the simulations. Importantly, there is complete TR and PT-symmetry breaking, implying total non-reciprocal mode conversion based on interference through the photonic AB effect. Of interesting consequence is the generation of an additional sidebands at frequencies that are not defined in the dispersion relation ($\omega_1-\Omega$ and $\omega_1 - 2\Omega$). As such, the field is distributed as a \textit{superposition} of several possible transverse electric modes, which can be safely neglected owing to their low modal amplitude. These spurious modes are `leaky', implying the superposition contains modes close to or above the light cone of the band-structure. However, the existence of the leaky modes gives insight into the amount of energy lost as a result of modulation. Likewise, the effectively vanishing modal amplitudes near $0$ and $60\mskip3mu \mu m$ are due to the absorbing boundary conditions of the PML layer.  In Figure \ref{fig:final}, the result of extracting the frequencies for additional detectors $D_1$ and $D_2$ placed at $1.5$ and $58 \mskip3mu \mu m$ respectively are shown. As is expected, the LR direction completely converts $\ket{1}$ to $\ket{2}$, whilst the RL and TR directions are not affected, as summarised in Table \ref{tab:modess}. In comparison with the indirect modulation of \ref{nonrec}, these modes can be removed using widely available passive modal filters, allowing for broadband optical isolation.
+
+
+
+\begin{figure}
+	\setlength{\figH}{0.22\textwidth}
+	\setlength{\figW}{0.24\textwidth}
+	\begin{subfigure}{0.33\textwidth}
+		\centering
+		\input{graphs/fangFDTD/LR.tex}
+		\subcaption{RL}
+	\end{subfigure}%
+	\begin{subfigure}{0.33\textwidth}
+		\centering
+		\input{graphs/fangFDTD/RL.tex}
+		\subcaption{LR}
+	\end{subfigure}%
+	\begin{subfigure}{0.33\textwidth}
+		\centering
+		\input{graphs/fangFDTD/TR.tex}
+		\subcaption{TR}
+	\end{subfigure}
+	\caption[Fourier components of the optical AB effect]{Frequencies of the optical Aharonov-Bohm effect for detector $D_1$ at $1.5 \mu m$ and detector $D_2$ at $58 \mu m$ for \textbf{(a)} left to right \textbf{(b)} right to left, and \textbf{(c)} time-reversed directions. Note that for all graphs, both $D_1$ and $D_2$ are shown, however there is an overlap in the LR and TR paths.}
+	\label{fig:final}
+\end{figure}
+
+
+\begin{table}[b]
+	\centering
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Direction & Input         & Output         \\
+		\hline
+		Left to right (LR) & $\ket{1}$  & $\ket{2}$  \\
+		Right to left (RL) & $\bra{1}$ & $\bra{1}$ \\
+		Time-reversed (TR) & $\bra{2}$ & $\bra{2}$ \\
+		\hline
+	\end{tabular}
+	\caption[Summary of mode transitions in the photonic AB effect.]{Summary of mode transitions in the photonic AB effect.}
+	\label{tab:modess}
+\end{table}
+
+ 

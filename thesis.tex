@@ -1,0 +1,74 @@
+
+%------------------------ Preamble and bibliography resources
+\documentclass[12pt,oneside]{book}
+\input{thesispreamble} 
+\usepackage{subcaption}
+\usepackage{uowthesistitlepage}[honours]
+\usepackage{nomencl}
+\usepackage{etoolbox}
+\makenomenclature
+
+\addbibresource{library.bib}
+%------------------------ Main Document --------------------------
+\begin{document}
+  
+%-------------- Information For The Title Page
+% Title page info (see uowthesistitlepage package)
+   % \title{Synthetic Gauge Potentials for Light through Non-Reciprocal Phases} 
+   \title{Synthetic Gauge Potentials for Light in Time-Dependent Media}
+    \author{Daniel Hey}
+    \date{2017} 
+    \degree{Bachelor of Science (Physics) (Honours)} 
+    \supervisor[1]{Dr. Enbang Li} 
+    \school{Physics}
+
+%-------------- Front Matter
+
+    \frontmatter
+    	\maketitle
+    \declaration
+    
+    \include{frontmatter/abstract}
+    \include{frontmatter/acknowledgments}
+
+%-------------- Table of contents
+    \cleardoublepage
+    \phantomsection \pdfbookmark[0]{Contents}{Contents} 
+    \tableofcontents
+    \addcontentsline{toc}{chapter}{\listfigurename}
+    \listoffigures
+    \addcontentsline{toc}{chapter}{\listtablename}
+    \listoftables
+    \include{frontmatter/nomenclature}
+	\printnomenclature
+	
+%-------------- Chapters
+    \cleardoublepage
+    \mainmatter
+    \include{chapters/introduction}
+    \include{chapters/syntheticgauge}
+    \include{chapters/movingmedia} 
+    \include{chapters/finitedifference}
+    %\include{chapters/photonictransitions}
+    %\include{chapters/timedomain}
+    %\include{chapters/frequencydomain}
+    \include{chapters/nonreciprocal}
+    %\include{chapters/ABeffect}
+    \include{chapters/Comparison}
+	%\include{chapters/isolator}    
+    \include{chapters/conclusion}
+
+%-------------- Appendices
+    \cleardoublepage
+    \appendix
+    \include{appendices/appendix1}
+    \include{appendices/appendix2}
+    
+%-------------- Bibliography
+    \cleardoublepage
+    \phantomsection  
+    \addcontentsline{toc}{chapter}{Bibliography}              
+    \printbibliography
+    
+\end{document}  
+

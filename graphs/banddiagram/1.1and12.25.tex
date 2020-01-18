@@ -1,0 +1,94 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+\definecolor{mycolor2}{rgb}{0.00000,0.44706,0.74118}%
+\definecolor{mycolor3}{rgb}{0.46600,0.67400,0.18800}%
+\definecolor{mycolor4}{rgb}{0.00000,0.49804,0.00000}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\figW,
+height=0.4\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+xmin=0.001,
+yticklabel style={/pgf/number format/fixed},
+xticklabel style={/pgf/number format/fixed},
+xmax=0.5,
+xlabel={Wavevector $\text{k (2}\pi\text{/a)}$},
+ymin=0,
+ymax=0.25,
+ylabel={Frequency $\omega\text{ (2}\pi\text{c/a)}$},
+axis background/.style={fill=white},
+legend pos=south east
+]
+\addplot [color=mycolor1, line width=1.0pt]
+  table[row sep=crcr]{%
+0.00106370944159151	0.001\\
+0.0173164838778657	0.015\\
+0.0339791004711106	0.025\\
+0.0485238451323132	0.032\\
+0.0840513505460331	0.046\\
+0.161161500553998	0.0710000000000001\\
+0.322500034364579	0.117\\
+0.501279538435555	0.166\\
+};
+\addlegendentry{Solver};
+\addplot [color=mycolor2, line width=1.0pt, forget plot]
+  table[row sep=crcr]{%
+0	0.129\\
+0.060088932026341	0.131\\
+0.129014261816538	0.135\\
+0.137389857852266	0.137\\
+0.140026562489592	0.139\\
+0.158721291577674	0.147\\
+0.187634882659275	0.156\\
+0.230105681117631	0.167\\
+0.292652360394282	0.182\\
+0.374312220807439	0.201\\
+0.503433266613461	0.231\\
+};
+\addplot [color=mycolor3, dashed, line width=1.0pt]
+  table[row sep=crcr]{%
+0	0\\
+0.0348259	0.0222165\\
+0.0557214	0.0333214000000001\\
+0.0800995	0.0439132\\
+0.111443	0.0552305\\
+0.163682	0.071727\\
+0.254229	0.0979683\\
+0.431841	0.147035\\
+0.501493	0.166061\\
+};
+\addplot [color=mycolor4, dashed, line width=1.0pt]
+  table[row sep=crcr]{%
+0	0.093062\\
+0.0139303	0.0938928\\
+0.0313433	0.0971598\\
+0.0487562	0.102545\\
+0.0731343	0.11255\\
+0.132338	0.138462\\
+0.160199	0.14803\\
+0.198507	0.158972\\
+0.264677	0.17542\\
+0.445771	0.217557\\
+0.501493	0.230556\\
+};
+\addlegendentry{MPB};
+\addplot [color=black, line width=1.0pt]
+  table[row sep=crcr]{%
+0	0\\
+0.250746	0.250746\\
+};
+
+\node[label={180:{$\ket{1}$}},circle,fill=mode1,inner sep=2pt] at (0.366,0.129) {};
+\node[label={180:{$\ket{2}$}},circle,fill=mode2,inner sep=2pt] at (0.366,0.199) {};
+\draw[line width=0.2mm, draw=black, ->] (0.366,0.135) -- (0.366,0.193);
+\node[label={180:{$\Omega$}}] at (0.366,0.164) {};
+\end{axis}
+\end{tikzpicture}%

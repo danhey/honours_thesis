@@ -1,0 +1,196 @@
+\chapter{Derivations}
+
+\section{Minkowski relations}
+The Minkowski relations describe how electromagnetic fields transform between reference frames. Consider the frame $\Gamma'$ in which a medium is moving with velocity $v \hat{x}$ relative to an observer in the rest frame $\Gamma$. In the primed frame, the basic constitutive equations for electromagnetic fields in the media obey 
+
+\begin{align}
+\bm{D'} &= \epsilon \bm{E'} \label{const1},\\
+\bm{B'} &= \mu \bm{H'} \label{const2},
+\end{align}
+
+where $\mu$ and $\epsilon$ represent the permeability and permittivity of the medium respectively, $\mu = \mu_0 \mu_r$ and $\epsilon = \epsilon_0 \epsilon_r$. The most direct method of transforming between reference frames in electromagnetism involves the use of the electromagnetic field tensor $F^{\mu \nu}$ defined in its contravariant form by 
+
+\begin{equation}
+F^{\mu \nu} = 
+\begin{bmatrix}
+0 & E_x/c & E_y/c & E_z/c \\
+-E_x/c & 0 & B_z & -B_y \\
+-E_y/c & -B_z & 0 & B_x \\
+-E_z/c & B_y & -B_x & 0
+\end{bmatrix}.
+\label{eqn:emtensor}
+\end{equation}
+
+It is well known that the Lorentz equations transform coordinates between relatively moving reference frames. In the form of a mixed tensor for a Lorentz boost along $\hat{x}$,
+
+\begin{equation}
+\label{lorentz}
+\tensor{\Lambda}{^\mu_\nu} =
+\begin{bmatrix}
+\gamma & -\gamma\beta & 0 & 0 \\
+-\gamma \beta & \gamma & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 
+\end{bmatrix}
+\end{equation}
+
+where $\gamma = {1}/{\sqrt{1-\beta^2}}$ and $\beta = v/c$. The electromagnetic field tensor is transformed by the Lorentz boost according to standard tensor notation as
+
+\begin{equation}
+F^{'\mu\nu} = \tensor{\Lambda}{^\mu_\alpha} \tensor{\Lambda}{^\nu_\beta} F^{\alpha \beta} 
+= \tensor{\Lambda}{^\mu_\alpha} F^{\alpha \beta} \tensor{\Lambda}{^\nu_\beta}  
+= (\Lambda F \Lambda^T)^{\mu \nu},
+\end{equation}
+
+where $T$ represents the transpose of the matrix. For a rank 2 asymmetric tensor, there are only $6$ independent terms. Explicitly calculating this transformation yields the tensor in the primed frame
+
+\begin{equation}
+F^{'\mu_\nu} =
+\begin{bmatrix}
+0		&	E_x/c	&	\gamma ( E_y/c - \beta B_z)	&	\gamma ( E_z/c + \beta B_y) \\
+-E_x/c	&	0	&	\gamma ( B_z - \beta E_y/c)	&	-\gamma (\beta E_z/c + B_y) \\
+\gamma ( \beta B_z/c - E_y)	&	\gamma ( \beta E_y/c - B_z)	& 0	& B_x \\ 
+-\gamma ( E_z/c + \beta B_y)	&	\gamma ( \beta E_z/c + B_y)	& -B_x	& 0
+\end{bmatrix},
+\end{equation}
+
+which completely describes how the $E$ and $B$ fields transform with respect to motion along the $\hat{x}$ direction. By comparison with the original electromagnetic tensor \ref{eqn:emtensor}, the variation of the field components in the primed frame can be examined,
+
+\begin{align}
+E^{'}_{x} &= E_x 
+\qquad E^{'}_{y} = \gamma ( E_y - \beta B_z)	
+\qquad E^{'}_{z} = \gamma ( E_z + \beta B_y) \\
+B^{'}_{x} &= B_x 
+\qquad B^{'}_{y} = \gamma ( \beta E_z + B_y)
+\qquad B^{'}_{z} = \gamma ( \beta E_z - \beta E_y).
+\end{align}
+
+These field components can further be resolved into their parallel ($\parallel$) and perpendicular ($\bot$) components relative to  $v \hat{x}$,
+
+\begin{align}
+E^{'}_{\parallel} &= (\bm{E}+\bm{v} \times \bm{B})_\parallel
+\qquad E^{'}_{\bot} = \gamma (\bm{E}+\bm{v} \times \bm{B})_\bot  \label{EMinkowski}\\
+B^{'}_{\parallel} &= (\bm{B}-\dfrac{1}{c^2}\bm{v} \times \bm{E})_\parallel
+\qquad B^{'}_{\bot} = \gamma (\bm{B}-\dfrac{1}{c^2}\bm{v} \times \bm{E})_\bot \label{BMinkowski}.
+\end{align}
+
+Where the fact that $(\bm{v} \times \bm{B})_{\parallel} = 0$ has been used to incorporate the $\bm{B}$ field into $E_\parallel$. By replacing $\bm{E} $ with $c\bm{D}$ and $\bm{B}$ by $\frac{\bm{H}}{c}$, similar relations for the $\bm{D}$ and $\bm{H}$ fields can be obtained,
+
+\begin{align}
+H^{'}_{\parallel} &= (\bm{H}-\bm{v} \times \bm{D})_\parallel
+\qquad H^{'}_{\bot} = \gamma (\bm{H}-\bm{v} \times \bm{D})_\bot \label{HMinkowski}\\
+D^{'}_{\parallel} &= (\bm{D}+\dfrac{1}{c^2}\bm{v} \times \bm{H})_\parallel
+\qquad D^{'}_{\bot} = \gamma (\bm{D}+\dfrac{1}{c^2}\bm{v} \times \bm{H})_\bot.\label{DMinkowski}
+\end{align}
+
+Substituting Equations \ref{EMinkowski} through \ref{DMinkowski} into \ref{const1} and \ref{const2} for both the parallel and perpendicular components, yields the following set of relationships;
+
+\begin{align}
+\bm{D} + \dfrac{1}{c^2} \bm{v} \times \bm{H} &= \epsilon (\bm{E} + \bm{v} \times {B}) \\
+\bm{B} - \dfrac{1}{c^2} \bm{v} \times \bm{E} &= \mu (\bm{H} + \bm{v} \times {D}).
+\label{eqn:minkowski}
+\end{align}
+
+\section{Direct photonic transitions through coupled-mode theory}
+\label{app:cmt}
+Here, we provide the derivation of the coupled mode equation that describes the dynamics of power exchange between modes in a waveguide structure undergoing modulation (as used to validate the FDFD method). Beginning with Maxwell's equations for a time-dependent permittivity,
+
+\begin{align}
+\nabla \times \bm{E}(\bm{r},t) &= -\mu_0 \dfrac{\partial \bm{H}(\bm{r},t)}{\partial t} \\
+\nabla \times \bm{H}(\bm{r},t) &= \epsilon_0 \dfrac{\partial \epsilon_r(\bm{r},t) \bm{E}(\bm{r},t)}{\partial t}.
+\end{align}
+
+For a transverse electric (TE) wave, the electric field is only non-vanishing in $z$. In this case, the scalar electric field $E(x,y,t) = E_z (x,y,z)$ satisfies the wave equation
+%\begin{equation}
+%E(x,y,t) = E_z (x,y,z)
+%\end{equation}
+
+\begin{equation}
+\nabla^2 E(x,y,t) = \mu_0 \epsilon_0 \dfrac{\partial^2 \epsilon_r(x,y,t) E(x,y,t)}{\partial t^2}.
+\label{eqn:wave}
+\end{equation}
+
+Suppose now that we are interested only in $2N+1$ sideband modes at frequencies that are separated by the modulation frequency, $\Omega$. The electric field can then be written as the sum of modes propagating along $x$,
+
+\begin{equation}
+E(x,y,t) = \Re \{\sum_{n=-N}^{N} a_n(x) e^{-i \beta_n x}\hat{E}_n(y)e^{i \omega_n t} \}
+\label{eqn:refield}
+\end{equation}
+
+where $w_n=w_0+n \Omega$, $a_n$ is the modal amplitude, $\beta = 2 \pi  k$ is the propagation constant at each sideband, and $\hat{E}_n(y)$ is the modal profile of the field. The modal profiles are normalised through the orthogonality condition, so that for a pair of modes $\hat{E}_m(y)$ and $\hat{E}_n(y)$,
+
+\begin{equation}
+\int_{-\infty}^{\infty} dy \hat{E}^*_m(y) \hat{E}_n(y) = \dfrac{2 \omega_m \mu_0}{\beta_m} \delta_{mn},
+\end{equation}
+
+such that $|a_n(x)|^2$ gives the power of the n-th mode as usual. Now, consider the standard modulation of the form
+
+\begin{equation}
+\epsilon(t) = \epsilon_{wg}+ \delta \cos (\Omega t + \phi).
+\end{equation}
+
+Substituting the above modulation and \ref{eqn:refield} into equation \ref{eqn:wave} yields
+
+\begin{multline}
+\sum_{n=-N}^{N} \Big[ a_n e^{-i \beta_n x} \partial^2_y \hat{E}_n(y) e^{i \omega_n t} - \big( \beta^2_n a_n + 2 i \beta_n \dfrac{d a_n}{dx}\big) e^{-i \beta_n x} \hat{E}_n(y) e^{i \omega_n t} \Big] =\\ \sum_{n=-N}^{N} \Big[\mu_0 \epsilon_0 \epsilon_{wg} (-\omega^2_n) a_n e^{-i \beta_n x} \hat{E}_n(y) e^{i \omega_n t} + \mu_0 \epsilon_0 \delta a_n e^{-i \beta_n x} \hat{E}_n \dfrac{\partial}{\partial t} \big( e^{i \omega_n t} \cos (\Omega t + \phi) \big) \Big],
+\label{eqn:longequationlol}
+\end{multline}
+
+where $d^2 a_n/dx^2$ has been ignored as it is slowly-varying. For $\hat{E}_n (y)$ to be a mode of an unmodulated waveguide, it must satisfy the mode equation,
+
+\begin{equation}
+(\partial^2_y - \beta^2_n) \hat{E}_n(y) = -\mu_0 \epsilon_0 \epsilon_{wg} \omega^2_n \hat{E}_n(y).
+\end{equation}
+
+Combining the above equation with \ref{eqn:longequationlol} reduces it to the form
+
+\begin{equation}
+\sum_{n=-N}^{N} 2 i \beta_n \dfrac{d_a n}{dx} e^{-i \beta_n x} \hat{E}_n(y) e^{i \omega_n t} =  \sum_{n'=-N}^{N} \mu_0 \epsilon_0 \dfrac{\delta}{2} a_{n'} e^{-i \beta_{n'} x} \hat{E}_{n'}(y) \big[\omega^2_{n'1}e^{i \omega_{n'+1}t} + \omega_{n'-1}^2 e^{i \omega_{n'-1} t} \big].
+\end{equation}
+Maintaining the $n=n'+1$ and $n=n'-1$ terms on the right-hand side of the above equation, we obtain
+\begin{equation}
+\hat{E}_n(y) \dfrac{d a_n}{dt} = - i \dfrac{\mu_0 \epsilon_0 \omega^2_n}{4 \beta_n} \delta(y) \Big[ \hat{E}_{n-1} (y) e^{-i(\beta_{n-1} - \beta_n)x} a_{n-1} + \hat{E}_{n+1}(y) e^{-i(\beta_{n+1} - \beta_n)x} a_{n+1} \Big].
+\end{equation}
+Applying the orthogonality condition results in the coupled mode equation for power exchange amongst adjacent eigenmodes in a modulated waveguide,
+\begin{equation}
+i \dfrac{d a_n (x)}{dx} = C_{n,n-1} (x) a_{n-1}(x) + C_{n,n+1} (x) a_{n+1} (x),
+\end{equation}
+where
+\begin{equation}
+C_{n,m} (x) = \dfrac{\epsilon_0 \omega_n}{8} e^{-i(\beta_m - \beta_n)x} \int_{-\infty}^{\infty} dy \delta(y) \hat{E}_n(y)^{\star} \hat{E}_m(y).
+\end{equation}
+With an N-th term truncation, the coupled mode equation can be written in the form
+\begin{equation}
+\dfrac{d}{dx} \begin{bmatrix}
+a_{-N} \\
+ \vdots \\
+a_0 \\
+ \vdots \\
+a_N
+\end{bmatrix}
+=
+-i
+\begin{bmatrix}
+0 & C_{-N,-N+1} & \dots & \dots & 0 \\
+\vdots & \ddots & & & \vdots \\
+0 & C_{0,-1} & 0 & C_{0,1} & 0 \\
+\vdots & & & \ddots & \vdots \\
+0 & \dots & \dots & C_{N,N-1} & 0 
+\end{bmatrix}
+\begin{bmatrix}
+a_{-N} \\
+\vdots \\
+a_0 \\
+\vdots \\
+a_N
+\end{bmatrix}
+\end{equation}
+
+which can be represented as simply
+
+\begin{equation}
+\dfrac{d a(x)}{dx} = - i K(x) a(x),
+\label{eqn:cmttheory}
+\end{equation}
+
+where $K(x) \in \mathbb{C}^{(2N+1) \times (2N+1)}$ is non-zero only along the off diagonal entries. Fortuitously, equation \ref{eqn:cmttheory} can be solved by applying $1D$ finite differences, where $x$ is discretised with step size $\Delta x$, so that $x_n = x_0 + n \Delta x$. This allows for the calculation of how the amplitude of modes varies with $x$ in a modulated region of a waveguide, given the coupling coefficients between modes (see Appendix \ref{app:FDTD} for the \textit{MATLAB} implementation).

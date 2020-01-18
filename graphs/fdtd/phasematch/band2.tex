@@ -1,0 +1,105 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\figW,
+height=0.4\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+xmin=-3,
+xmax=3,
+xlabel={Wavevector k ($2\pi/a$)},
+ylabel={Frequency $\omega$ ($2\pi c/a$)},
+ymin=0,
+ymax=1,
+axis background/.style={fill=white}
+]
+\draw[dashed] (-3,0.6468) -- (3,0.6468);
+\draw[dashed] (-3,0.8879) -- (3,0.8879);
+\node at (2.8,0.767) {$\Omega$};
+\draw[dashed] (1.836,0.6468) -- (1.836,0);
+\draw[dashed] (1.367,0.8879) -- (1.367,0);
+\node at (1.6,0.05) {$\Lambda$};
+\draw[->] (1.836,0.6468) -- (1.367,0.8879);
+\draw[->] (1.367,0.8879) -- (1.836,0.6468);
+\node[label={90:{$\bra{1}$}},circle,fill=mode1,inner sep=2pt] at (-1.836,0.6468) {};
+\node[label={90:{$\ket{1}$}},circle,fill=mode1,inner sep=2pt] at (1.836,0.6468) {};
+\node[label={90:{$\ket{2}$}},circle,fill=mode2,inner sep=2pt] at (1.367,0.8879) {};
+\node[label={90:{$\bra{2}$}},circle,fill=mode2,inner sep=2pt] at (-1.367,0.8879) {};
+\draw[->] (-1.836,0.6468) -- (-2.305,0.8879);
+\draw[->] (-1.367,0.8879) -- (-0.8979,0.6468);
+%\draw[line width=0.2mm, draw=black, ->] (0.366,0.135) -- (0.366,0.193);
+%\node[label={180:{$\Omega$}}] at (0.366,0.164) {};
+
+\addplot [color=black]
+  table[row sep=crcr]{%
+0.00856527091199988	0.0089999999999999\\
+0.0355740339675572	0.0329999999999999\\
+0.0773642883861596	0.0680000000000001\\
+0.108965071776361	0.0899999999999999\\
+0.216446056096282	0.148\\
+0.266469085354788	0.17\\
+0.44579687604775	0.239\\
+0.779460193245421	0.347\\
+0.90346776025157	0.384\\
+2.38185947042077	0.796\\
+3.00095872332965	0.965\\
+};
+\addplot [color=black]
+  table[row sep=crcr]{%
+0	0.649\\
+0.241290268767007	0.653\\
+0.432426865263543	0.661\\
+0.681620546537656	0.68\\
+0.70634705751922	0.698\\
+0.812185645324833	0.742\\
+0.983207321695099	0.792\\
+1.48370503209761	0.915\\
+1.85486453299797	1.001\\
+};
+\addplot [name path=A, color=black, line width=1.0pt]
+  table[row sep=crcr]{%
+0 0\\
+1.00664	1.00664\\
+};
+\addplot [name path=B, color=black, line width=1.0pt]
+  table[row sep=crcr]{%
+-0	0\\
+-1.00664	1.00664\\
+};
+\addplot [color=black]
+  table[row sep=crcr]{%
+-0	0\\
+-0.0425483776636622	0.04\\
+-0.112747396858924	0.0920000000000001\\
+-0.138703575229707	0.108\\
+-0.242619225661566	0.16\\
+-0.530251013303014	0.268\\
+-0.68277422737238	0.317\\
+-1.13395473723024	0.451\\
+-1.40367460079584	0.527\\
+-3.00095872332965	0.965\\
+};
+\addplot [color=black]
+  table[row sep=crcr]{%
+-0	0.649\\
+-0.326077818628705	0.656\\
+-0.605487195406852	0.672\\
+-0.681620546537656	0.68\\
+-0.720361604419702	0.706\\
+-0.780889623877291	0.731\\
+-0.822707823290201	0.745\\
+-0.979328562522052	0.791\\
+-1.40286353275794	0.896\\
+-1.58333534884432	0.938\\
+-1.73350139501897	0.973\\
+-1.85486453299797	1.001\\
+};
+\end{axis}
+\end{tikzpicture}%

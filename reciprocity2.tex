@@ -1,0 +1,30 @@
+\begin{tikzpicture}[scale=2]
+\pgfmathsetmacro{\lH}{1}
+\pgfmathsetmacro{\lR}{2}
+\pgfmathsetmacro{\sA}{asin(\lH/\lR)}
+\pgfmathsetmacro{\base}{1}
+\pgfmathsetmacro{\xshi}{\base/2}
+
+\draw[yshift = -2cm, xshift = -\xshi cm,name path=lens, fill=mode1, opacity=0.2] (0, \lH cm)
+arc[start angle = -\sA, delta angle = 2*\sA, radius = \lR cm] --
++(\base cm, 0)
+arc[start angle = 180 - \sA, delta angle = 2*\sA, radius = \lR cm]
+-- cycle;
+\fill[fill = black] (-1cm, 0) coordinate (F) circle[radius = 0cm];
+
+\begin{scope}[decoration = {
+	markings,
+	mark = at position 0.1 with {\arrow[rotate=180, scale = 1.5]{stealth}},
+	mark = at position 0.75 with {\arrow[rotate=180, scale = 1.5]{stealth}}
+}
+]
+\foreach \y  in {0.25, 0, -0.25}{
+	\draw[postaction = decorate] (-1.5cm, \y cm) -- (0, \y cm)
+	coordinate (A) 
+	-- ($(F)!3!(A)$) ;      
+	%extend lines along the path command here;
+}
+\end{scope}
+\node at (-1.5cm,1) {\textit{A}};
+\node at (1.5cm,1) {\textit{B}};
+\end{tikzpicture}

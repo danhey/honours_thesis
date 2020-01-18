@@ -1,0 +1,70 @@
+%% Creator: Inkscape inkscape 0.92.2, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file '1DSynthetic.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{415.51363703bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.79812596)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{1DSynthetic.pdf}}%
+    \put(0.15151652,0.26204348){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$E_1$}}}%
+    \put(0.53472528,0.26336029){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$E_2$}}}%
+    \put(0.34050633,0.05384603){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textit{$\Omega_M$}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{1DSynthetic.pdf}}%
+    \put(0.90104021,0.39665616){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textit{$\omega_0$}}}}%
+    \put(0.90104021,0.57730237){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textit{$\omega_0+\Omega$}}}}%
+    \put(0.90104021,0.75236163){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textit{$\omega_0+2\Omega$}}}}%
+    \put(0.90104021,0.21600993){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textit{$\omega_0-\Omega$}}}}%
+    \put(0.90104021,0.03722592){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{\textit{$\omega_0-2\Omega$}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{1DSynthetic.pdf}}%
+    \put(3.17363662,-0.75469816){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.88686364\unitlength}\raggedright \end{minipage}}}%
+    \put(3.34418732,-0.7888083){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.6822028\unitlength}\raggedright \end{minipage}}}%
+    \put(2.3891034,1.25780031){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{2.31948952\unitlength}\raggedright \end{minipage}}}%
+    \put(-0.3397078,0.23449611){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{3.20635316\unitlength}\raggedright \end{minipage}}}%
+    \put(-0.27148752,-0.37948641){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.20466084\unitlength}\raggedright \end{minipage}}}%
+    \put(-0.61258892,1.32602059){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{4.98008045\unitlength}\raggedright \end{minipage}}}%
+  \end{picture}%
+\endgroup%

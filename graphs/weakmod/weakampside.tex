@@ -1,0 +1,40 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\definecolor{mycolor1}{rgb}{0.00000,0.44700,0.74100}%
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.8\figW,
+height=0.25\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+xmin=-3,
+xmax=3,
+xtick={-3,-2,-1,0,1,2,3},
+yminorticks=false,
+xlabel={Sideband (n)},
+ymode=log,
+ymin=0.00000001,
+ymax=10,
+grid=both,
+ylabel = {Maximum $|E_z (\omega_n)|^2$},
+%ylabel={$\text{Maximum $|$E}_\text{z}\text{(}\omega{}_\text{n}\text{)$|$}$},
+axis background/.style={fill=white}
+]
+\addplot[only marks, mark=*, mark options={}, mark size=3.000pt, draw=black, fill=mycolor1] table[row sep=crcr]{%
+x	y\\
+-3	0.000000058939162\\
+-2	0.000049831160601\\
+-1	0.003480773455234\\
+0	1.010334172885610\\
+1	0.011021244259482\\
+2	0.000107038587645\\
+3	0.000002341788501\\
+};
+\end{axis}
+\end{tikzpicture}%

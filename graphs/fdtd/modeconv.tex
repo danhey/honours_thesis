@@ -1,0 +1,32 @@
+\begin{tikzpicture}
+    \begin{axis}[%
+width=0.8\figW,
+height=0.1\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+axis on top,
+xmin=0,
+xmax=23,
+xlabel={$\text{x (}\mu\text{m)}$},
+ymin=0,
+ymax=5,
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+]
+\fill[fill=eps] (0,1.95) rectangle (23,3.05);
+\fill[fill=epsilon] (2,2.5) rectangle (21,3.05);
+\fill[fill=modup] (2,2.5) rectangle (21,1.95);
+\draw[draw=src, line width=0.5mm] (1,0.8) -- (1,4.2);
+\draw[line width=0.5mm, draw=src, ->] (0.5,4.5) -- (1.1,4.5);
+\draw[line width=0.5mm, draw=src, ->] (0.5,0.5) -- (1.1,0.5);
+%\draw[pattern=north west lines, pattern color=black] (0,0) rectangle (60,0.5);
+%\draw[pattern=north west lines, pattern color=black] (0,0) rectangle (0.5,5);
+%\draw[pattern=north west lines, pattern color=black] (0,5) rectangle (60,4.5);
+%\draw[pattern=north west lines, pattern color=black] (60,0) rectangle (59.5,4.5);
+\draw (0,1.95) -- (24.2,1.95) -- (24.2,1.5) -- (35.8,1.5) -- (35.8,1.95) -- (60,1.95);
+\draw (0,3.05) -- (24.2,3.05) -- (24.2,3.5) -- (35.8,3.5) -- (35.8,3.05) -- (60,3.05);
+\draw[draw=red, dashed, line width=0.7mm] (2,3.05) -- (21,3.05) -- (21,1.95) -- (2,1.95) -- (2,3.05);
+\draw[draw=gray, line width = 0.5mm] (1.5,0) -- (1.5,5);
+\draw[draw=gray, line width = 0.5mm] (22,0) -- (22,5);
+\end{axis}
+\end{tikzpicture}

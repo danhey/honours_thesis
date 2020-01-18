@@ -1,0 +1,93 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\pgfplotsset{fangFields/.style={
+	width=0.8\figW,
+height=0.08\figH,
+	scale only axis,
+	axis on top,
+	title style = {at={(0.4\figH,0.06\figH)}},
+	xmin=0,
+	xmax=60,
+	ymin=0,
+	ymax=5,
+	clip=false,
+	axis background/.style={fill=white},
+	colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+	colorbar,
+	colorbar style={width=.01\linewidth, at={(1.02,0.04\figH)}, anchor=east}	
+	}
+}
+
+\begin{tikzpicture}
+\begin{axis}[%
+fangFields,
+at={(0\figW,0.95\figH)},
+title = {Total fields},
+point meta min=-19.1125620409379,
+point meta max=19.1125620409379,
+xticklabels={,,},
+colorbar style={title = {$V / \mu m$}, width=.01\linewidth, at={(1.02,0.04\figH)}, anchor=east},
+ylabel={$\text{y (}\mu\text{m)}$}
+]
+\addplot [forget plot] graphics [xmin=0, xmax=60, ymin=0, ymax=5] {graphs/fangcavity/RL/totalfield.png};
+\draw (0,1.95) -- (24.2,1.95) -- (24.2,1.5) -- (35.8,1.5) -- (35.8,1.95) -- (60,1.95);
+\draw (0,3.05) -- (24.2,3.05) -- (24.2,3.5) -- (35.8,3.5) -- (35.8,3.05) -- (60,3.05);
+\node at (55,6) {$ \longleftarrow \bra{1}$};
+\node at (5,6) {$\bra{1} \longleftarrow $};
+\node at (-2,7) {\textbf{(a)}};
+\end{axis}
+
+\begin{axis}[%
+fangFields,
+at={(0\figW,0.8\figH)},
+title = {$\omega_1 - \Omega$},
+title style = {at={(0.4\figH,0.06\figH)}},
+point meta min=-0.24239253622059,
+point meta max=0.24239253622059,
+xticklabels={,,},
+ylabel={$\text{y (}\mu\text{m)}$}
+]
+\addplot [forget plot] graphics [xmin=0, xmax=60, ymin=0, ymax=5] {graphs/fangcavity/RL/fields-1.png};
+\draw (0,1.95) -- (24.2,1.95) -- (24.2,1.5) -- (35.8,1.5) -- (35.8,1.95) -- (60,1.95);
+\draw (0,3.05) -- (24.2,3.05) -- (24.2,3.5) -- (35.8,3.5) -- (35.8,3.05) -- (60,3.05);
+\end{axis}
+
+\begin{axis}[%
+fangFields,
+at={(0\figW,0.65\figH)},
+title = {$\omega_1$},
+point meta min=-14.5540242292171,
+point meta max=14.5540242292171,
+xticklabels={,,},
+ylabel={$\text{y (}\mu\text{m)}$}
+]
+\addplot [forget plot] graphics [xmin=0, xmax=60, ymin=0, ymax=5] {graphs/fangcavity/RL/fields-2.png};
+\draw (0,1.95) -- (24.2,1.95) -- (24.2,1.5) -- (35.8,1.5) -- (35.8,1.95) -- (60,1.95);
+\draw (0,3.05) -- (24.2,3.05) -- (24.2,3.5) -- (35.8,3.5) -- (35.8,3.05) -- (60,3.05);
+\end{axis}
+
+\begin{axis}[%
+fangFields,
+width=0.8\figW,
+height=0.08\figH,
+at={(0\figW,0.5\figH)},
+title = {$\omega_1 + \Omega$},
+point meta min=-13.8291082848291,
+point meta max=13.8291082848291,
+xlabel={$\text{x (}\mu\text{m)}$},
+ylabel={$\text{y (}\mu\text{m)}$}
+]
+\addplot [forget plot] graphics [xmin=0, xmax=60, ymin=0, ymax=5] {graphs/fangcavity/RL/fields-3.png};
+\draw (0,1.95) -- (24.2,1.95) -- (24.2,1.5) -- (35.8,1.5) -- (35.8,1.95) -- (60,1.95);
+\draw (0,3.05) -- (24.2,3.05) -- (24.2,3.5) -- (35.8,3.5) -- (35.8,3.05) -- (60,3.05);
+\node at (-2,-3) {\textbf{(b)}};
+\end{axis}
+
+\input{graphs/fangcavity/RL/amptotal.tex}
+
+
+\end{tikzpicture}%

@@ -1,0 +1,22 @@
+\begin{figure}
+    \centering
+    \setlength{\figH}{1\linewidth}
+	\setlength{\figW}{0.5\textwidth}
+	\pgfplotsset{every axis/.append style={
+                    label style={font=\footnotesize},
+                    tick label style={font=\footnotesize}  
+                    }}
+    \begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/fangcavity/LR/fieldfang.tex}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/fangcavity/LR/ampsingle.tex}
+    \end{subfigure}
+    \begin{subfigure}[t]{\textwidth}
+    	\setlength{\figH}{0.5\textwidth}
+		\setlength{\figW}{1\textwidth}
+		\input{graphs/fangcavity/LR/totalfield.tex}
+    \end{subfigure}
+    \caption{\textbf{a)} The modal field profiles of the transverse electric field $E_z$ propagating along the length of the waveguide structure. Each graph represents a sideband of the original frequency $\omega_0$ separated by integer multiples of the modulation frequency $n \Omega$. \textbf{b)} The corresponding amplitudes of each mode sideband along the structure as calculated theoretically (orange) and through the simulation (blue).}
+    \label{fig:animals}
+\end{figure}	

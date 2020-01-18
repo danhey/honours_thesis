@@ -1,0 +1,40 @@
+\chapter{MATLAB and Scheme code}
+%In this appendix we present the programs written for the determination of waveguide bandstructure, and both frequency and time domain simulations. Band structure calculations were performed in \textit{Scheme}, a derivative of the \textit{Lisp} programming language which makes use of the \textit{MPB} Photonic Bandstructure Library provided by M.I.T. All other simulations were performed in a core installation of \textit{MATLAB}.
+
+In this appendix, \textit{MATLAB} code written for the time and frequency domain simulations is presented, as well as the analytic mode solvers. For brevity, only the main functions have been included to show how the update equations are solved. Input files for the simulations are not listed and can be provided on request.
+
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+\lstset{language=Matlab,%
+	basicstyle=\scriptsize,
+	lineskip={-1.5pt},
+	breaklines=true,%
+	morekeywords={matlab2tikz},
+	keywordstyle=\color{blue},%
+	frame=single,
+	morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+	identifierstyle=\color{black},%
+	stringstyle=\color{mylilas},
+	commentstyle=\color{mygreen},%
+	showstringspaces=false,%without this there will be a symbol in the places where there is a space
+	numbers=left,%
+	numberstyle={\tiny \color{black}},% size of the numbers
+	numbersep=9pt, % this defines how far the numbers are from the text
+	emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+}
+
+
+
+%\section{Band structure calculation in MPB}
+%\lstinputlisting[language=Lisp]{./code/mpbband.scm}
+\section{Finite Difference}
+\label{app:FDTD}
+\lstinputlisting[language=Matlab]{./code/analysis/beta_sym.m}
+\lstinputlisting[language=Matlab]{./code/analysis/cmt_coupling.m}
+\subsection{Time domain}
+\label{app:FDTDeqtn}
+\lstinputlisting[language=Matlab]{./code/solvers/fdtd/solve_time.m}
+\subsection{Frequency domain}
+\label{app:FDFD}
+\lstinputlisting[language=Matlab]{./code/solvers/solve_frequency.m}
+%\lstinputlisting[language=Matlab]{./code/utilities/S_create.m}

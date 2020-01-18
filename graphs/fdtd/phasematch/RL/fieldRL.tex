@@ -1,0 +1,35 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.076\figW,
+height=\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+point meta min=-0.114809167054617,
+point meta max=0.114809167054617,
+axis on top,
+xmin=0.5,
+xmax=101.5,
+xtick={100},
+tick align=outside,
+xlabel style={font=\color{white!15!black}},
+xlabel={$\text{x (}\mu\text{m)}$},
+ymin=0.5,
+ymax=1001.5,
+ytick={1,200.8,400.6,600.4,800.2,1000},
+yticklabels={{0},{2},{4},{6},{8},{10}},
+ylabel style={font=\color{white!15!black}},
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+colorbar
+]
+\addplot [forget plot] graphics [xmin=0.5, xmax=101.5, ymin=0.5, ymax=1001.5] {graphs/fdtd/phasematch/RL/fieldRL-1.png};
+\end{axis}
+\end{tikzpicture}%

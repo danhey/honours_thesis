@@ -1,0 +1,19 @@
+\pgfplotsset{fangFields/.style={
+	width=0.8\figW,
+height=0.08\figH,
+	scale only axis,
+	axis on top,
+	tick align=outside,
+	title style = {at={(0.4\figH,0.06\figH)}},
+	xmin=0,
+	xmax=60,
+	ymin=0,
+	ymax=5,
+	xlabel style={font=\color{white!15!black}},
+	ylabel style={font=\color{white!15!black}, at={(-0.05,0.1\figH)}},
+	axis background/.style={fill=white},
+	colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+	colorbar,
+	colorbar style={width=.02\linewidth, at={(1.05,0.04\figH)}, anchor=east}	
+	}
+}

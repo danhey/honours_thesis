@@ -1,0 +1,36 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=\figW,
+height=0.325\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+point meta min=-21.9924910740817,
+point meta max=21.9924910740817,
+axis on top,
+xmin=0.5,
+xmax=1201.5,
+xtick={1,40.9666666666667,80.9333333333333,120.9,160.866666666667,200.833333333333,240.8,280.766666666667,320.733333333333,360.7,400.666666666667,440.633333333333,480.6,520.566666666667,560.533333333333,600.5,640.466666666667,680.433333333333,720.4,760.366666666667,800.333333333333,840.3,880.266666666667,920.233333333333,960.2,1000.16666666667,1040.13333333333,1080.1,1120.06666666667,1160.03333333333,1200},
+xticklabels={{0},{2},{4},{6},{8},{10},{12},{14},{16},{18},{20},{22},{24},{26},{28},{30},{32},{34},{36},{38},{40},{42},{44},{46},{48},{50},{52},{54},{56},{58},{60}},
+tick align=outside,
+xlabel style={font=\color{white!15!black}},
+xlabel={$\text{x (}\mu\text{m)}$},
+ymin=0.5,
+ymax=101.5,
+ytick={1,50.5,100},
+yticklabels={{0},{2},{4}},
+ylabel style={font=\color{white!15!black}},
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+colorbar
+]
+\addplot [forget plot] graphics [xmin=0.5, xmax=1201.5, ymin=0.5, ymax=101.5] {totalfield-1.png};
+\end{axis}
+\end{tikzpicture}%

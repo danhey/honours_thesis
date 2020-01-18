@@ -1,0 +1,25 @@
+\begin{tikzpicture}
+%\node at (-1,6.5) {\textbf{a)}};
+\draw[step=3cm,color=black] (0,0) grid (6,6);
+\draw[thick,->,color=black] (0,0) -- (6.5,0) node[anchor=north] {x};
+\draw[thick,->,color=black] (0,0) -- (0,6.5) node[anchor=east] {y};
+%\node at (-0.75,+0.75) {A};
+\draw[line width=0.7mm,->,draw=mode2] (1.5,0) -- (2,0) node[anchor=north east] {$\color{mode2} H_x$};
+\draw[line width=0.7mm,->,draw=mode2] (4.5,0) -- (5,0) node[anchor=north east] {$\color{mode2} H_x$};
+\draw[line width=0.7mm,->,draw=mode2] (1.5,3) -- (2,3) node[anchor=north east] {$\color{mode2} H_x$};
+\draw[line width=0.7mm,->,draw=mode2] (4.5,3) -- (5,3) node[anchor=north east] {$\color{mode2} H_x$};
+\draw[line width=0.7mm,->,draw=mode2] (1.5,6) -- (2,6) node[anchor=north east] {$\color{mode2} H_x$};
+\draw[line width=0.7mm,->,draw=mode2] (4.5,6) -- (5,6) node[anchor=north east] {$\color{mode2} H_x$};
+
+\draw[line width=0.7mm,->,draw=mode2] (0,1.5) -- (0,2) node[anchor=north west] {$\color{mode2} H_y$};
+\draw[line width=0.7mm,->,draw=mode2] (3,1.5) -- (3,2) node[anchor=north west] {$\color{mode2} H_y$};
+\draw[line width=0.7mm,->,draw=mode2] (6,1.5) -- (6,2) node[anchor=north west] {$\color{mode2} H_y$};
+\draw[line width=0.7mm,->,draw=mode2] (0,4.5) -- (0,5) node[anchor=north west] {$\color{mode2} H_y$};
+\draw[line width=0.7mm,->,draw=mode2] (3,4.5) -- (3,5) node[anchor=north west] {$\color{mode2} H_y$};
+\draw[line width=0.7mm,->,draw=mode2] (6,4.5) -- (6,5) node[anchor=north west] {$\color{mode2} H_y$};
+
+\draw[very thick,->,draw=mode1] (1.5,1.5) circle (0.1cm) node[anchor=north west] {$\color{mode1} E_z$};
+\draw[very thick,->,draw=mode1] (4.5,1.5) circle (0.1cm) node[anchor=north west] {$\color{mode1} E_z$};
+\draw[very thick,->,draw=mode1] (1.5,4.5) circle (0.1cm) node[anchor=north west] {$\color{mode1} E_z$};
+\draw[very thick,->,draw=mode1] (4.5,4.5) circle (0.1cm) node[anchor=north west] {$\color{mode1} E_z$};
+\end{tikzpicture}

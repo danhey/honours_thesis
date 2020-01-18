@@ -1,0 +1,32 @@
+% This file was created by matlab2tikz.
+%
+%The latest updates can be retrieved from
+%  http://www.mathworks.com/matlabcentral/fileexchange/22022-matlab2tikz-matlab2tikz
+%where you can also make suggestions and rate matlab2tikz.
+%
+\begin{tikzpicture}
+
+\begin{axis}[%
+width=0.75\figW,
+height=0.06\figH,
+at={(0\figW,0\figH)},
+scale only axis,
+point meta min=-4.99371933183411,
+point meta max=4.99371933183411,
+axis on top,
+xmin=0,
+xmax=23,
+xlabel={$\text{x (}\mu\text{m)}$},
+ymin=-2.5,
+ymax=2.5,
+ylabel={$\text{y (}\mu\text{m)}$},
+axis background/.style={fill=white},
+colormap={mymap}{[1pt] rgb(0pt)=(0,0,1); rgb(31pt)=(1,1,1); rgb(32pt)=(1,1,1); rgb(63pt)=(1,0,0)},
+colorbar,
+colorbar style={width=.01\linewidth, at={(1.02,0.03\figH)}, anchor=east,ytick={-4,4},title={$E_z$ ($V/\mu m$)}}
+]
+\addplot [forget plot] graphics [xmin=0, xmax=23, ymin=-2.5, ymax=2.5] {graphs/fdtd/reciprocal/fieldconvertFINAL-1.png};
+\draw (0,0.55) -- (23,0.55);
+\draw (0,-0.55) -- (23,-0.55);
+\end{axis}
+\end{tikzpicture}%

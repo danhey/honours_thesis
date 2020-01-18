@@ -1,0 +1,171 @@
+\chapter{Finite difference frequency domain}
+
+The finite difference frequency domain method is a complementary numerical method of solving Maxwell's equations as an alternative to time domain simulations. 
+
+There are alternatives, however, to obtaining full-wave solutions to Maxwell's equations. Namely, by a suitable transformation into the frequency domain, the problem of time-step based simulations instead becomes one of solving a large system of linear equations in the form
+
+\begin{equation}
+Ax = b
+\end{equation}
+
+where $A$ is the \textit{wave matrix}, $x$ is a vector that contains information on the electromagnetic fields, and $b$ is a source. Fortuitously, in two dimensions the most efficient method of solving for the field distributions is through the elementary matrix inversion,
+
+\begin{equation}
+x = A^{-1}b,
+\end{equation}
+ 
+which has the trivial solution of $x=0$ for a zero source simulation ($b=0$). In solving for $x$, one obtains the steady-state solution directly embedded in the matrix, however the frequency domain formulation can only handle one frequency at a time.
+
+
+\section{The multi-frequency method (MF-FDFD)}
+Here, we adapt the frequency domain method to multiple simultaneous frequencies.
+Consider the frequency domain Maxwell equations;
+
+\begin{equation}
+\nabla \times \mu(\omega)^{-1} - \omega^2 \epsilon_s (\omega) \bm{E}(\omega) - \omega^2 \bm{P}(\omega) = -i \omega \bm{J}(\omega)
+\end{equation}
+
+where $\bm{E}(\omega)$ is the electric field distribution at frequency $\omega$, and $\mu(\omega)$ and $\epsilon_s(\omega)$ are the frequency dependent permeability and permittivity respectively. 
+
+Now, we assume a region of the simulation space is altered by the standard permittivity modulation of the form
+
+\begin{equation}
+\epsilon(t) = \epsilon_s + \delta cos(\omega t + \phi).
+\end{equation}
+
+We can account for this modulation in frequency space by considering its effects on the polarisation of the material in question,
+
+\begin{equation}
+	 \delta cos(\omega t + \phi) \bm{E}.
+\end{equation}
+
+Through Euler's identity we obtain a more suggestible form
+
+\begin{equation}
+\bm{P}(\omega) = \dfrac{\delta}{2} (e^{i(\Omega t + \phi)} + e^{-i(\Omega t + \phi)}) \bm{E}(t).
+\end{equation}
+
+Using the standard inverse Fourier transform \footnote{Note that here we are using the inverse Fourier transform to move from the time to the frequency domain, although the forward Fourier transform is just as applicable, and only results in a shifted phase.},
+
+The generation of sidebands by the modulation ensures that the time-domain electric field $\bm{E}(t)$ is the superposition of electric field components at each sideband $n$ (through the linearity of Maxwell's equations),
+
+\begin{equation}
+\tilde{\bm{E}}(t) = \Re \{\sum_n \bm{E}(\omega_n)e^{i \omega_n t}\}
+\end{equation}
+
+
+We implement the finite difference method to solve the above equations.
+
+To test the validity of the simulation, we first consider a weakly modulated waveguide ($\delta = 0.001$).  A weak modulation is chosen as it can be readily approximated through coupled mode theory, providing a comparison.
+
+To test the suitability of FDFD, we perform a frequency domain simulation of a dynamically modulated waveguide structure over several side-bands. The waveguide is identical to that of the one simulated via time-domain methods (fig X), with $\epsilon_s = 12.25$, which supports a transverse electric $\text{TE}_{00}$ mode at $w_0 = 0.129 (\frac{2\pi c}{a})$ and a  $\text{TE}_{01}$ mode at $w_1 = 0.198(\frac{2\pi c}{a})$ (see fig Y for bandstructure). For each frequency sideband, we extract the field profile amplitude and compare to the analytical results provided by coupled-mode theory. An eigenmode source is calculated a priori (see appendix Z) much like the time-domain simulations, so that the field profile can be coupled exactly into the waveguide structure. We test both the left-to-right $LR$ and right-to-left $RL$ propagation directions to ensure that parity-symmetry is broken (as is predicted by theory), and set the normalised amplitude to 1UNITS. To test time-reversal symmetry, we inject a $\text{TE}_{01}$ mode from the right-to-left direction.
+
+%\begin{figure}[t]
+%	\centering
+%	\setlength{\figH}{0.5\textwidth}
+%	\setlength{\figW}{1\textwidth}
+%	\begin{subfigure}[t]{0.5\textwidth}
+%		\input{graphs/fdfd/sparsity.tex}
+%	\end{subfigure}%
+%	\begin{subfigure}[t]{0.5\textwidth}
+%		\input{graphs/fdfd/sparsitynosource.tex}
+%	\end{subfigure}
+%	\caption[Sparsity of the wave matrix]{Sparsity of the wave matrix \textit{A}}
+%	\label{fig:sparsity}
+%\end{figure}
+
+
+\section{Numerical validation}
+
+\subsection{A weakly modulated waveguide}
+\begin{figure}[t]
+\centering
+\setlength{\figH}{1\textwidth}
+\setlength{\figW}{1\textwidth}
+\input{graphs/weakmod/structure.tex}
+\caption[The modulated waveguide structure]{Weakly modulated waveguide structure.}
+\label{fig:weakmod}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \setlength{\figH}{1\linewidth}
+	\setlength{\figW}{1\textwidth}
+	\pgfplotsset{every axis/.append style={
+                    label style={font=\footnotesize},
+                    tick label style={font=\footnotesize}  
+                    }}
+    \begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/weakmod/weakmod.tex}
+    \end{subfigure}%
+    \begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/weakmod/weakamp.tex}
+    \end{subfigure}
+    \caption{\textbf{a)} The modal field profiles of the transverse electric field $E_z$ propagating along the length of the waveguide structure. Each graph represents a sideband of the original frequency $\omega_0$ separated by integer multiples of the modulation frequency $n \Omega$. \textbf{b)} The corresponding amplitudes of each mode sideband along the structure as calculated theoretically (orange) and through the simulation (blue).}
+    \label{fig:weakMod}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\setlength{\figH}{0.4\textwidth}
+\setlength{\figW}{0.7\textwidth}
+\input{graphs/weakmod/weakampside.tex}
+\caption[Maximum field amplitude at each sideband]{The maximum field amplitude calculated for each sideband $n$ on a log scale. The field intensity decreases exponentially with $n$. Note that the amplitude of the sidebands is not symmetric about $n=0$.}
+\label{fig:sideamp}
+\end{figure}
+
+There is excellent agreement between \textit{FDFD} and \textit{CMT} for predicting the modal amplitude. However, \textit{FDFD} shows minor oscillations along the length of the waveguide. Performing a standard Fourier transform on the amplitudes, the oscillation is found to be at a frequency of $\Pi_1 = 2 \pi / (k_1 + k_2)$.
+
+Visual inspection alone supports this argument: in figure \ref{fig:weakmod}, it is possible to observe a second mode generation \textit{before} the region of modulation itself. This suggests that the sideband generated is also backwards-propagating.
+
+The maximum $|E_z|$ field at each sideband $\omega_n$ is shown in figure \ref{fig:sideamp}. At the initial band $\omega_0$, the field amplitude is normalised to unity. The fields exponentially decrease with $n$. However, the higher sidebands decrease at a slower rate than that of the negative sidebands. This is attributed to the band structure of the waveguide itself - it will always be possible for light t
+\section{Non-reciprocal propagation}
+
+
+
+\section{Complete optical isolation through photonic transitions}
+
+As a more practical example, we consider a microcavity ring resonator of ... Below, the results of the frequency domain simulation are shown. Such simulations represent the first of their kind in the frequency domain. Indeed, owing to the fast convergence time of \textit{FDFD}, it is amenable to rapid prototyping of photonic structures. Previously, \textit{FDTD} simulations required several hours to solve .. etc
+
+As a more practical example, we consider a ring resonator of inner radius $2.9 \mu m$ and outer radius $3.18 \mu m$. The refractive index of the resonator has an imaginary component at $n=4-5e^{-9}i$, chosen such that radiative losses lead to critical coupling in the waveguide. When the length of the ring is modulated, the generated sidebands are no longer critically coupled allowing for non-reciprocal propagation through the system.  The ring is dynamically modulated at a frequency of $10e^9 \frac{rad}{s}$ and modulation strength of $\delta = 0.1 \epsilon_0$, both chosen to be achievable with current modulation technology (see section Z for feasibility). As before, the fundamental mode is calculated a priori and coupled exactly into the input waveguide. We obtain analytical results through standard coupled mode theory (see appendix Z), and compare the contrast ratio. 
+
+
+\section{Phase matched multi-frequency (PM-FDFD)}
+The MF-FDFD technique is quite flexible in it's applications, however, Shi's implementation can only consider transitions along the same wave-vector on the dispersion relation. Here, I will show that by accounting for a permittivity modulation of the form
+
+\begin{equation}
+	\epsilon(x,t)=\delta \cos{\Omega t + \Gamma x}
+\end{equation}
+
+where $\Omega$ is as usual the modulation frequency, and $\Gamma$ is defined as the difference in wave-vectors (EXPLAIN BETTER).
+
+then it becomes possible to extend MF-FDFD to simulate \textit{indirect} interband photonic transitions, which allow for a change of both mode and wavevector, a technique that will be referred to as phase-matched finite difference frequency domain (\textit{PM-FDFD)}. The derivation largely follows Shi's original formulation, however now requiring the use of the $2D$ Fourier transform to account for the changing frequency profile along the length of the modulated structure;
+
+
+
+\section{Comparisons with FDFD}
+
+The difficulty in drawing benchmark comparisons between $FDTD$ and $FDFD$ lie in the inherently different techniques both methods use to approach a full-wave solution. $FDTD$ operates by effectively `brute-forcing' a solution over each time-step, whereas $FDFD$ generates and then solves a wave matrix, independent of any meaningful time-step. Naturally, the solution obtained by \textit{FDFD} is dependent not only on the spatial step chosen in the simulation, but also in the number of side-bands calculated. In figure ZZ, we show the maximum modal amplitude for each side-band, noting that the rapid drop-off in amplitude is exponential in nature. Thus, only several frequency side-bands are required for a full-wave solution. 
+
+To compare the speeds of \textit{TD} and \textit{FD} methods, we calculate the time until a steady-state for time domain, and compare it to the time obtained before a frequency domain solution. This is because \textit{FD} always yields the steady-state solution, whereas \textit{TD} can simulate field propagation indefinitely. To determine the time until the steady state fields are obtained, a single probe is placed at the far end of the simulation region, just within the boundaries of the PML layer. The probe collects a single value of the transverse electric field at every time-step. When the steady state solution is reached, the field will have no transient response. 
+
+
+\subsection{Impact of PML layer width on solution convergence}
+
+\subsection{Accelerated solution through the correct choice of PML}
+
+\subsection{Ill-conditioned wave matrices in FDFD}
+Suppose in \textit{FDFD} that we want to solve the general wave matrix equation
+
+\begin{equation}
+x = A^{-1}b.
+\end{equation}
+
+Now suppose that $b$ is changed a small amount and the matrix is solved again, 
+
+\begin{equation}
+x + \Delta x = A^{-1} (b + \Delta b).
+\end{equation}
+
+If a small change in $b$ produces a large change in $x$, the matrix $A$ is said to be `ill-conditioned'. The degree to which a matrix is conditioned is characterised by the condition number $\kappa$.

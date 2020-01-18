@@ -1,0 +1,16 @@
+\begin{tikzpicture}
+\begin{groupplot}[
+    group style={
+     group name=my plots,
+        group size=3 by 1,
+        xlabels at=edge bottom,
+        ylabels at=edge left
+    },height=4cm, width=4cm]
+\nextgroupplot[ylabel={foo},]
+\addplot coordinates {(0,0) (-0.1,-0.1) (-0.2,-0.2)};
+\nextgroupplot[ylabel={bar},]
+\addplot coordinates {(0,2) (1,1) (2,0)};
+\nextgroupplot[ylabel={bar},]
+\addplot coordinates {(0,2) (1,1) (2,0)};
+\end{groupplot}
+\end{tikzpicture}

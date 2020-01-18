@@ -1,0 +1,288 @@
+\chapter{Numerical methods in nanophotonics}
+
+\label{chapter:method}
+To numerically analyse the non-reciprocity of dynamically modulated structures, a method is required to solve Maxwell's equations for arbitrary permittivity distributions. In almost every case, the electromagnetic problems presented here are difficult, if not impossible to solve analytically. Usually only simple geometries can be considered. Thus, we turn our attention towards numerical solutions instead - namely the finite difference methods, which are a broad class of numerical techniques that solve differential equations by approximating derivatives between finite differences \cite{Champagne2001}.
+
+
+\begin{figure}[t]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\input{yeegrid.tex}
+		\subcaption{}
+		\label{sfig:yeegrid}
+	\end{subfigure}%
+	\begin{subfigure}{0.5\textwidth}
+		\centering
+		\input{yeecell.tex}
+		\subcaption{}
+		\label{sfig:yeecell}
+	\end{subfigure}
+	\caption[Electromagnetic field distribution on the Yee grid]{\textbf{a)} Yee grid placement of non-vanishing $E_z$ (blue) and $H_x$, and $H_y$ (red) fields. \textbf{b)} A single cell of the Yee grid, with coordinate placements of the fields. The $H$ field is shown to naturally satisfy the divergence free condition. Likewise, the $E_z$ field sits in the exact centre of the curl.}
+	\label{fig:yeegrid}
+\end{figure}
+
+The finite difference method replaces all partial derivatives in a differential equation by \textit{approximations}. For a $1D$ function, this can be done by taking the gradient between two points separated by $h$
+\begin{equation}
+\dfrac{\partial f(x)}{\partial x} = \lim\limits_{h \rightarrow 0} \dfrac{f(a+h) - f(a)}{h} \approx \dfrac{f(a+h)-f(h)}{\Delta h},
+\end{equation}
+where the accuracy increases as $\Delta h$ approaches 0. For electromagnetic fields however, the $\bm{E}$ and $\bm{H}$ fields are coupled by nature of Maxwell's equations. To discretise these fields in space, the fields are staggered on a $2D$ grid structure known as the Yee grid \cite{Yee1966}, where the electric and magnetic field components are stored at set $i,j$ points on the grid. As shown in Figure \ref{sfig:yeegrid}, the Yee algorithm centres its $\bm{E}$ fields on the faces of a square (in $2D$ TE), and its $\bm{H}$ fields on the edges. This choice ensures that every $\bm{E}$ field component is surrounded by four circulating $\bm{H}$ components \cite{Taflove2005}, naturally satisfying the divergence free conditions.
+
+In deriving these finite differences, the simulation is first assumed to be in $2D$ such that $\partial_z = 0$. Likewise, only the transverse electric (non-vanishing $E_z$, $H_x$, and $H_y$) propagation is considered, and the permeability and permittivity tensors are assumed to be diagonally anisotropic ($\mu_{lm} = \epsilon_{lm} = 0$ if $l \neq m$ ). From this, the curl components of Maxwell's equations, 
+
+\begin{align}
+	\nabla \times \bm{E}(\bm{r},t) &= -\mu \dfrac{\partial \bm{H}(\bm{r},t)}{\partial t}, \\
+	\nabla \times \bm{H}(\bm{r},t) &= \epsilon \dfrac{\partial \bm{E}(\bm{r},t)}{\partial t},
+\end{align}
+
+can be fully vectorised,
+
+\begin{align}
+\partial_y E_z &= - \mu_{xx} \partial_t H_x, \\
+ \partial_x  E_z &=  \mu_{yy} \partial_t H_y, \\
+\partial_x H_y - \partial_y H_x &= \epsilon_{xx}\partial_t E_z.
+\end{align}
+
+The partial derivatives are calculated by taking finite differences on the Yee grid, as in Figure \ref{sfig:yeecell}. The notation used here for a single point on the Yee grid is given as $(i,j) = (i \Delta x, j \Delta y)$ where $\Delta$ is the spatial discretisation. Further, any function $f$ evaluated at some discrete point is referred to as $f(i,j) = f^{i,j}$, so that the spatially finite differences take the form 
+
+\begin{align}
+\partial_y E_z &= C_x^E|^{i,j} = \dfrac{1}{\Delta y} (E_z^{i,j+1}-E_z^{i,j}), \label{c1}\\
+ \partial_x  E_z &= C_y^E|^{i,j} = \dfrac{1}{\Delta x} (E_z^{i+1,j}-E_z^{i,j}), \label{c2} \\
+\partial_x H_y - \partial_y H_x &= C_z^H|^{i,j} = \dfrac{1}{\Delta x} (H_y^{i,j}-H_y^{i-1,j}) - \dfrac{1}{\Delta y} (H_x^{i,j}-H_x^{i,j-1}), \label{c3}
+\end{align}
+
+where $C$ is used to refer to the curl component of the field at the $i,j$ point on the grid.
+
+\section{Finite difference time domain}
+
+In the finite difference time domain (FDTD) method, \textit{time} is discretised as well as space, and at every time-step all the fields in the simulation are updated based on the previous value of the fields. However, the difficulty in adapting the time domain method to simulate \textit{active} nanophotonic materials is that there is no pre-existing framework for modifying the permittivity tensor while the simulation is running. The effects of motion can be emulated by using a separate source to change the refractive index of the material, but this method introduces its own problems - the pump source can and in most cases will interfere with the original source. The most obvious way to bypass these problems is to directly update the permittivity of the simulation at each time-step. Although this requires having to re-calculate the update coefficients of the simulation every time-step, it is by far the easiest method to implement. Here, a vastly improved convergence time is proposed by moving the equations that are dependent on the permittivity to a single field update equation. In this case, only one update coefficient needs to be calculated per time-step (as opposed to 6) and as will be shown, this coefficient is a relatively inexpensive piecewise matrix division. The only downside of choosing such an update method is that the material permeability tensor becomes entwined in every other coefficient. However, since the permeability coefficients only need to be calculated once, the simulation is not adversely affected.
+
+\subsection{Formulation of the time-domain method}
+
+In the time-domain formulation, $\bm{H}$ fields are calculated at half time steps ($t + \frac{\Delta t}{2}$) and the electric fields at integer steps ($t$), in a central difference scheme, since taking a finite central difference over time would not ensure that the electric fields are located in the mid-point of the magnetic field steps and vice versa. In general, the electric field is much stronger than the magnetic field leading to floating point errors. To rectify this, the electric field is normalised against the impedance,
+
+\begin{equation}
+\tilde{\bm{E}} = \sqrt{\dfrac{\epsilon}{\mu}} \bm{E}.
+\end{equation}
+
+The partial derivatives are discretised in time as 
+\begin{align}
+C_x^E\rvert^{i,j}_t &= -\mu_{xx}\rvert^{i,j} (c \Delta t)^{-1} \Big[H_x \rvert_{t+\frac{\Delta t}{2}}^{i,j} - H_x \rvert_{t-\frac{\Delta t}{2}}^{i,j}\Big], \\
+C_y^E\rvert^{i,j}_t &= -\mu_{yy} \rvert^{i,j} (c \Delta t)^{-1} \Big[H_x \rvert_{t+\frac{\Delta t}{2}}^{i,j} - H_x \rvert_{t-\frac{\Delta t}{2}}^{i,j}\Big], \\
+C_z^H\rvert^{i,j}_{t+\frac{\Delta t}{2}} &= -\epsilon_{zz} \rvert^{i,j} (c \Delta t)^{-1} \Big[E_z \rvert_{t + \Delta t}^{i,j} - E_z \rvert_{t-\Delta t}^{i,j}\Big],
+\end{align}
+
+where $C$ refers to the spatial curls of Equations \ref{c1}, \ref{c2}, and \ref{c3}. The above equations can be rearranged to solve for the \textit{future} fields in terms of the past fields,
+
+\begin{align}
+H_x \rvert_{t+\frac{\Delta t}{2}}^{i,j} &= H_x \rvert_{t-\frac{\Delta t}{2}}^{i,j} - c \Delta t (\mu_{xx}\rvert^{i,j})^{-1} C_x^E \rvert_t^{i,j}, \\
+H_y \rvert_{t+\frac{\Delta t}{2}}^{i,j} &= H_y \rvert_{t-\frac{\Delta t}{2}}^{i,j} - c \Delta t (\mu_{yy}\rvert^{i,j})^{-1} C_y^E \rvert_t^{i,j}, \\
+\tilde{E_z} \rvert_{t+\Delta t}^{i,j} &= \tilde{E_z} \rvert_{t-\Delta t}^{i,j} + c \Delta t (\epsilon_{zz} \rvert^{i,j})^{-1} C_z^H \rvert_{t+\frac{\Delta t}{2}}^{i,j}.
+\label{eqn:fdtd}
+\end{align}
+
+yielding the update equations. Notably, by replacing $\bm{E}$ with $\bm{D} \epsilon^{-1}$, the last field update equation instead becomes
+
+\begin{equation}
+\tilde{D_z} \rvert_{t+\Delta t}^{i,j} = \tilde{D_z} \rvert_{t-\Delta t}^{i,j} + c \Delta t  C_z^H \rvert_{t+\frac{\Delta t}{2}}^{i,j},
+\end{equation}
+
+where the $E_z$ field can be obtained by,
+
+\begin{equation}
+\tilde{E_z} \rvert_{t+\Delta t}^{i,j} =  (\epsilon_{zz} \rvert^{i,j})^{-1} \tilde{D_z} \rvert_{t+\Delta t}^{i,j}.
+\end{equation}
+
+These equations are implemented using \textit{MATLAB}, and form the basis of the time-domain simulations (Appendix \ref{app:FDTDeqtn}). However, there are several other components of the simulation that also require taking into account - namely the boundary conditions and source excitations.
+
+\subsection{Boundary conditions \& the Perfectly Matched Layer}
+The Perfectly Matched Layer (PML) is an artificial medium that is developed to absorb EM waves incident from any direction with minimal reflection \cite{Berenger1994}. Since EM waves incident on PML do not reflect backwards, a simulation domain surrounded by PML effectively represents an open space, and is used commonly in finite difference methods to simulate spatially unbounded systems (such as waveguides with infinite length, or a point source radiating). Strictly speaking, PML is not a boundary condition, but rather a special type of absorbing material placed adjacent to the boundaries of the simulation. In all simulations presented here, a PML layer of $20 \Delta$ is applied on the boundaries, where $\Delta$ is the chosen spatial discretisation ($\Delta x = \Delta y$). In the case where the discretisation is different along $x$ and $y$, the PML layer extends inward depending on the given discretisation (i.e. the PML width on the left and right sides of the simulation would be $20 \Delta x $, while the width along the top and bottom would be $20 \Delta y $).
+
+\subsection{Modal source}
+
+\begin{figure}[t]
+	\centering
+	\setlength{\figH}{0.5\textwidth}
+	\setlength{\figW}{0.5\textwidth}
+	\begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/modes/fieldprofile.tex}
+	\end{subfigure}%
+	\begin{subfigure}[t]{0.5\textwidth}
+		\input{graphs/modes/mode1.tex}
+	\end{subfigure}
+	\caption[First two transverse electric modes of a slab dielectric waveguide]{The first even and odd modes of a slab dielectric waveguide, \textbf{(a)} $\ket{1}$ (even) and \textbf{(b)} $\ket{2}$ (odd), normalised to unity as returned by the dispersion solver. Blue lines indicate regions inside the waveguide (guided modes), and green lines indicate regions outside the waveguide. On the right, the corresponding shape of the $E_z$ field profile is shown. To excite a total line source, the returned field profile is paired with a sinusoidal oscillation that is written directly into the $E_z$ field at every time-step.}
+	\label{fig:modes}
+\end{figure}
+
+Since all fields in the simulation are initialised to zero, an excitation of the fields is required. To excite a mode in a wave guide it is insufficient to merely place a point sinusoidal source at some arbitrary location near the guide. Even with a priori knowledge of the mode wavevector $k$ and frequency $\omega$, the source will excite several modes within a range of frequencies. To examine complete mode conversion, an exact known mode is required. If there are multiple modes passing through a modulated region, each will be transitioned up a band of the dispersion relation in turn. The typical method used to excite guided modes in FDTD is to place a \textit{gaussian} source of the form
+
+\begin{equation}
+g(t) = e^{-\Big(\dfrac{t-t_0}{\tau}\Big)^2},
+\end{equation}
+
+in some off-centre location, where $t_0$ is the pulse centre and $\tau$ is the `spread'. Such a Gaussian source possesses an effectively infinite range of frequencies. After propagating through the waveguide, modes within range of the spread frequency are excited.
+
+Instead of attempting to generate modes via Gaussian sources, a waveguide dispersion relation solver is implemented in \textit{MATLAB} to both calculate dispersion relations, and return electric field amplitudes in the exact shape of the required mode (Appendix \ref{app:FDTD}), by numerically solving the transcendental equation \cite{Rana2017}
+
+\begin{equation}
+\begin{bmatrix}
+\tan(k_x d) \\
+- \cot(k_x d )
+\end{bmatrix}
+=
+\Big[\dfrac{\omega^2 \mu_0 (\epsilon_1 - \epsilon_2)}{k_z^2}-1\Big]^{\frac{1}{2}},
+\end{equation}
+
+where $k_x$ and $k_z$ are wavevector components in $x$ and $z$ respectively, $\omega$ is the given frequency, $\epsilon_1$ is the waveguide permittivity, $\epsilon_2$ is the surrounding permittivity, and $d$ is the width of the waveguide.
+
+To verify the implementation wherever dispersion relations are calculated, a comparison is also made to the open source \textit{MPB} photonic bandstructure program \cite{Johnson2001}, which instead makes use frequency iterative methods. Having a numerical solver for the bands means that a source can be excited directly by choosing an input region, passing the parameters of the wave guide to the dispersion solver, and obtaining a mode at a pre-defined frequency (or equivalently, wavevector). This mode shape is then paired with a sinusoidally oscillating source at the given frequency. This is demonstrated in Figure \ref{fig:modes}, where the output of the mode solver is shown for the first even $\ket{1}$ and odd $\ket{2}$ TE modes for a waveguide of width $1.1 \mu m$ and relative permittivity $10$. 
+
+
+\subsection{Demonstration of direct photonic transitions}
+\label{sec:demonstration}
+%\begin{figure}[t]
+%	\centering
+%	\setlength{\figH}{1\textwidth}
+%	\setlength{\figW}{1\textwidth}
+%	\input{graphs/fdtd/modeconv.tex}
+%	\caption[The weakly modulated waveguide structure]{The modulated waveguide structure. The dark blue region is a material of unity permeability and permittivity of $\epsilon_{wg} = 12.25$. The light blue sections are regions where the permittivity is modulated by an amount $0.1 \epsilon_{wg} \cos(\omega t + \phi)$, with $\phi=0$ on the left and $\phi=\frac{\pi}{2}$ on the right. The modulation region is chosen to only cover the upper half of the waveguide to maximise the coupling.}
+%	\label{fig:cavity}
+%\end{figure} 
+
+\begin{figure}[t]
+	\centering
+	\setlength{\figH}{\textwidth}
+	\setlength{\figW}{\textwidth}
+	\input{graphs/fdtd/reciprocal/amplitudelengthfixed.tex}
+	\caption[Power spectrum of mode transitions]{Normalised amplitude of the modes along the modulated region. Simulation results are in solid lines. Theoretical results from equation \ref{eqn:theorymode} are shown in dashed lines. Mode $\ket{1}$ vanishes at $19 \mskip3mu \mu m$, giving the value of the coherence length. As the amplitude of the first mode decreases, the second mode increases in turn. The discrepancy between theoretical and simulation is largely due to the generation of spurious side band frequency components, which theoretical treatments can not accurately predict.}
+	\label{fig:coherencelengthtd}
+\end{figure} 
+
+Here, a direct mode conversion is demonstrated through FDTD as a method of verifying the \textit{MATLAB} implementation of the update equations (\ref{eqn:fdtd}). The waveguide is chosen to be of length $23\mskip3mu \mu m$ and width $1.1\mskip3mu \mu m$. From a dispersion relation calculation, such a waveguide supports the TE modes $\ket{1}$ at frequency $\omega_1 = 0.129 \mskip3mu (2 \pi c/a)$, and $\ket{2}$ at $\omega_2 = 0.199 \mskip3mu (2 \pi c/a)$, at the same wavevector $k$. A modulation of $\delta \cos (\Omega t + \phi)$ is initially applied from $2  \mskip3mu \mu m$ to $21 \mskip3mu \mu m$. This modulation here is a direct transition, as $\Delta k = 0$ \footnote{Such a choice of spatially independent modulation leads to a strictly \textit{reciprocal} mode conversion. On the reverse path (RL), phase matching is still satisfied (no wavevector shift is applied) allowing the back-propagating mode to transition regardless.}. A modal line source is excited at $x = 1 \mskip3mu \mu m$ that extends from $y=1$ to $y=3 \mskip3mu \mu m$, with the spatial discretisation chosen as $\Delta x = \Delta y = 0.04 \mskip3mu \mu m$. To obtain the coherence length, the amplitudes of both modes are sampled throughout the modulated region continuously, by calculating a Fourier transform over the length simulation.
+
+ A detector ($D_2$) is placed at $22 \mskip3mu \mu m$ to collect the incident field after modulation, and another detector ($D_1$) placed in the region between the source and the beginning of modulation ($1.5 \mskip3mu \mu m$). To ensure the steady state solution is reached, the simulation is run for $10 000$ time steps (corresponding to a time of around $850 \mskip3mu fs$). To obtain the coherence length, the modulation region is first extended to $25 \mu m$, and the amplitudes of modes $\ket{1}$ and $\ket{2}$ are sampled with a Fourier transform along the entire length of the waveguide, as shown in figure \ref{fig:coherencelengthtd}. The coherence length is then numerically determined to be $19 \mu m$, based on how the first mode vanishes at that point. Note the discrepancy between theoretical and simulation, this is largely because the theoretical treatment of photonic transitions is restricted to only coupling between two adjacent modes. In reality, the modulation can generate backward propagating modes (such that $k \rightarrow -k$), as well as modes at higher sidebands, and thus power is lost to these spurious modes - which the semi-analytic coupled mode theory can not predict. With only a temporal modulation, scattering in the guide can transition backward reflected waves into higher order modes. This only occurs because reciprocity is not broken in the waveguide so that light is free to pass in both directions. Coupled mode theory does not predict such oscillations, as it is derived to assume the coupling is only between two exact modes.
+
+Importantly, perfect mode conversion is observed in Figure \ref{fig:reciprocalmode} agreeing with the expected theory. The Fourier transform of the detector outputs illustrates the input $\ket{1}$ mode at $\omega_1 = 0.129 \mskip3mu (2\pi c/a)$ and output in mode $\ket{2}$ at $\omega_2 = 0.199 \mskip3mu (2\pi c/a)$. Additionally, a weak higher order mode $\ket{3}$ is observed at frequency $\omega_3 = 0.269 \mskip3mu (2\pi c/a)$ in the output. The existence of the higher order mode is attributed to a further direct transition of the 2nd mode. 
+
+\begin{figure}[t]
+	\centering
+	\setlength{\figH}{\textwidth}
+	\setlength{\figW}{\textwidth}
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\input{graphs/fdtd/reciprocal/fieldconvertFINAL.tex}
+	\end{subfigure}
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+	\input{graphs/fdtd/reciprocal/FREQ2.tex}
+	\end{subfigure}
+	\caption[Complete mode conversion in a modulated waveguide]{Complete mode conversion in a modulated waveguide between frequencies $0.129 \mskip3mu (2\pi c/a)$ and $0.199 \mskip3mu (2 \pi c/a)$ in the left to right direction.}
+	\label{fig:reciprocalmode}
+\end{figure} 
+
+
+\section{Motivation for development of frequency domain solutions}
+
+Simulating effective modulations of wave-guide structures is evidently a computationally intensive process. Generally, devices that modulate permittivities operate in the gigahertz range, whilst the carrier waves are in the terahertz range. To observe a mode transition in a simulation would then require an average of $10^2$ optical cycles of the carrier wave. This huge discrepancy in frequencies is not amenable to time-domain simulations since the discrete time-step must be chosen based on the highest frequency present. Such a massive gap between the optical source frequency and the modulation frequency lead to slow convergence times, since the input wave must pass through at minimum one cycle of the modulation. There are however several benefits granted by the harmonic nature of the modulation. The first is that the modulation generates sidebands at \textit{known} frequencies, $\omega_n = \omega_0 \pm n \Omega$, where $\Omega$ is the modulation frequency and $n$ is the set of integers. This is incredibly advantageous: every possible frequency that can exist in the simulation space is known before the simulation begins. The second benefit granted is that the modulation is harmonic in nature, and it is this harmonicity that allows for a method of expressing the time dependent modulations in frequency space. Thus, a method is sought in the frequency domain, where \textit{frequency} is discretised instead of \textit{time}.
+
+
+\section{Finite difference frequency domain}
+
+The finite difference frequency domain represents an alternative method to obtaining full-wave solutions to Maxwell's equations, complementary to the time domain. By a suitable transformation of Maxwell's equations into the frequency domain, the problem of time-step based simulations instead becomes one of solving a large system of linear equations of the form $Ax=b$, where $A$ is the \textit{wave matrix}, $x$ is a vector that contains the entire electromagnetic field, and $b$ is a current source. Fortuitously, in two dimensions the most efficient method of solving for the field distributions is through the standard matrix inversion, $x = A^{-1}b$, which has the trivial solution of $x=0$ for a zero source simulation ($b=0$). In solving for $x$, one obtains the steady-state solution directly embedded in the matrix, that is the point at which there is no transient response in the fields - the only variation is in the phase.
+
+\subsection{Formulation of FDFD}
+
+In the frequency domain, Maxwell's equations take the form \cite{Shin2012}
+
+\begin{align}
+\nabla \times \bm{E}(\bm{r},\omega) &= - i \omega \mu(\bm{r},\omega)\bm{H}(\bm{r},\omega) - \bm{M}(\bm{r},\omega), \label{eqn:maxwellfd}\\
+\nabla \times \bm{H}(\bm{r},\omega) &= i \omega \epsilon(\bm{r},\omega)\bm{E}(\bm{r},\omega)+\bm{J}(\bm{r},\omega),
+\end{align}
+where $\bm{E}$ and $\bm{H}$ are as usual the electric and magnetic fields respectively, and $\bm{J}$ and $\bm{M}$ are the electric and magnetic current source densities. The field solutions can then be obtained by solving the general matrix equation
+
+\begin{equation}
+\begin{bmatrix}
+-i \omega \epsilon & \nabla \times \\
+\nabla \times & i \omega \mu 
+\end{bmatrix}
+\begin{bmatrix}
+\bm{E} \\
+\bm{H}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\bm{J} \\
+\bm{-M}
+\end{bmatrix}.
+\label{eqn:fdfdwave}
+\end{equation}
+
+Equation \ref{eqn:fdfdwave} is evidently of the form $Ax = b$. However in attempting to solve for the fields $x$, the wave matrix $A$ will become ill-conditioned - a characteristic of matrices which is unfavourable to numeric solvers. Such ill-conditioning arises because the $\bm{E}$ field is usually several orders of magnitude stronger than the $\bm{H}$ field. In the time-domain, this discrepancy in field magnitude was corrected by normalising the field variables. On the other hand, in the frequency domain a more precise solution can be obtained by eliminating the $\bm{H}$ field completely from equation \ref{eqn:maxwellfd} to obtain
+
+\begin{equation}
+\nabla \times \mu^{-1} \nabla \times \bm{E} - \omega^2 \epsilon_s \bm{E} = -i \omega \bm{J}- \nabla \times \mu^{-1} \bm{M}.
+\label{eqn:fdfdmaster}
+\end{equation}
+
+$\bm{H}$ is chosen to be eliminated because nanophotonic objects, which are the focus of these simulations, are in most cases smaller than the source wavelength (that is, $|\omega^2 \epsilon \bm{E}| \ll |\nabla \times \mu^{-1} \nabla \times \bm{E}|$). This allows for the approximation of the operator on the left hand side in Equation \ref{eqn:fdfdmaster} by $\nabla \times \mu^{-1} \nabla \times$, especially in the case where $\mu$ is unity - the operator becomes much more favourable to numeric solvers.
+
+In solving \ref{eqn:fdfdmaster},the magnetic current source $\bm{M}$ can be safely ignored without loss of generality \footnote{This is because for any given $\bm{J}$ and $\bm{M}$, a new current source density $\bm{J'} = \bm{J} + \frac{1}{i \omega} \nabla \times \mu^{-1} \bm{M}$ and $\bm{M'}=0$ will always result in the same right hand side of \ref{eqn:fdfdmaster}}. The equation to solve using finite difference methods then takes the form 
+
+\begin{equation}
+\nabla \times \mu^{-1} \nabla \times \bm{E} - \omega^2 \epsilon \bm{E} = -i \omega \bm{J}.
+\label{eqn:fdfd}
+\end{equation}
+
+As an additional benefit to eliminating $\bm{H}$, the size of the simulation is effectively halved, since only one field is calculated. Once \ref{eqn:fdfd} is solved for $\bm{E}$, $\bm{H}$ can be obtained by back-substitution into the frequency domain equations \ref{eqn:fdfdmaster}.
+
+\subsection{The multi-frequency method (MF-FDFD)}
+
+The difficulty in using the frequency domain formulation to simulate modulated waveguides is that it is only capable of handling one frequency per simulation. Likewise, the necessary modulation can not be accounted for with any single type of time-independent permittivity tensor, since it can not be altered once the wave matrix has been built. Based on the work of Shi et al., the FDFD method is here extended to accommodate an effectively infinite number of frequencies \cite{Shi2016}, in what is known as the multi-frequency finite difference frequency domain (MF-FDFD) method.
+
+The essence of MF-FDFD is that a permittivity modulation imparts an additional polarisation density at a frequency $\omega$, causing Equation \ref{eqn:fdfd} to take the modified form,
+
+\begin{equation}
+\nabla \times \mu^{-1} \nabla \times \bm{E} - \omega^2 \epsilon \bm{E} = -i \omega \bm{J} + \omega^2 \bm{P}.
+\end{equation}
+
+To account for such a polarisation density in the simulation, consider first the nature of the modulation itself;
+
+\begin{equation}
+\epsilon(t)' = \delta \cos(\omega t + \phi) =  \dfrac{\delta}{2} \big[e^{i(\Omega t + \phi)} + e^{-i(\Omega t + \phi)}\big].
+\end{equation}
+
+In this case, the modulation gives rises to a time-dependent polarisation $\bm{P}(t)$ of the form
+
+\begin{equation}
+{\bm{P}}(t) = \dfrac{\delta}{2} \big[e^{i(\Omega t + \phi)} + e^{-i(\Omega t + \phi)}\big]\bm{E}(t).
+\end{equation}
+
+Whereby using the standard Fourier transform,
+\begin{equation}
+f(t) = \int_{-\infty}^{\infty} \hat{f}(\omega) e^{2 \pi i \omega t} d \omega,
+\end{equation}
+gives the polarisation in frequency space,
+\begin{equation}
+\tilde{\bm{P}}(\omega) = \dfrac{\delta}{2} e^{i \phi} \bm{E}(\omega-\Omega) + \dfrac{\delta}{2} e^{i \phi} \bm{E}(\omega+ \Omega).
+\label{eqn:fdfdpol}
+\end{equation}
+
+In the case where a photonic device is excited with a current density source $\bm{J}$ at frequency $\omega_1$, dynamic generate $n$ sidebands at frequency components $\omega_n = \omega_1 + n \Omega$. Then, under modulation the total electric field in the time domain $\bm{E}(t)$ is the superposition of electric field components at each sideband $E_z(\omega_n)$ through the linearity of Maxwell's equations,
+
+\begin{equation}
+{\bm{E}}(t) = \Re \{\sum_n \bm{E}(\omega_n)e^{i \omega_n t}\}.	
+\label{eqn:fdfde}
+\end{equation}
+
+Although there are effectively an infinite number of such sidebands $n \in Z$, the simulation is chosen to be truncated between $-N$ to $N$ sidebands. Substituting equations \ref{eqn:fdfdpol} through \ref{eqn:fdfde} into \ref{eqn:fdfdmaster} yields the set of $n$ equations,
+
+\begin{equation}
+\nabla \times \mu(\omega_n)^{-1} \nabla \times \bm{E}(\omega_n) - \omega_n^2 \epsilon_{wg}(\omega_n) \bm{E}(\omega_n) - \dfrac{1}{2} \omega_n^2 \delta e^{i \phi} \bm{E}(\omega_{n+1}) = -i \omega \bm{J}(\omega_0) \delta_{n0}
+\label{eqn:mffdfd}
+\end{equation}
+
+where $\delta_{n0}$ is the Kronecker delta function. The finite difference method is implemented to solve the above equation in two dimensions (Appendix \ref{app:FDFD}), by discretising the frequencies of Equation \ref{eqn:mffdfd}. Such discretisation results in the matrix equation $Ax=b$, which is solved through \textit{MATLAB's} UMFPACK iterative matrix solver. Since the fields are still located on the Yee grid, the formulation of the spatial derivatives is identical to that of the time-domain. Similarly, the PML construction and modal source input do not differ. 
+
+
+
+

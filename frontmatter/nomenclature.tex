@@ -1,0 +1,32 @@
+
+\renewcommand\nomgroup[1]{%
+	\item[\bfseries
+	\ifstrequal{#1}{A}{Physics constants}{%
+		\ifstrequal{#1}{B}{Number sets}{%
+			\ifstrequal{#1}{C}{Electromagnetic quantities}{%
+				\ifstrequal{#1}{D}{Other}{}}}}%
+	]}
+
+% This will add the units
+%----------------------------------------------
+\newcommand{\nomunit}[1]{%
+	\renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+%----------------------------------------------
+
+	
+	\nomenclature[A, 01]{$c$}{Speed of light in a vacuum inertial system \nomunit{$299,792,458\, m/s$}}
+	\nomenclature[A, 02]{$\hbar$}{Reduced Planck Constant \nomunit{$1.0546 \times 10^{-34}\, Js/rad$}}
+	\nomenclature[A, 03]{$\mu_0$}{Vacuum permeability \nomunit{$1.257 \times 10^{-6}\, N/A^2$}}
+	\nomenclature[A, 04]{$\epsilon_0$}{Vacuum permittivity \nomunit{$8.854 \times 10^{-12}\, F/m$}}
+	\nomenclature[B, 01]{$\mathbb{R}$}{Real numbers}
+	\nomenclature[B, 02]{$\mathbb{C}$}{Complex numbers}
+	\nomenclature[C,01]{$\bm{E}(\bm{r},t)$}{Electric field \nomunit{$V/m$}}
+	\nomenclature[C,02]{$\bm{D}(\bm{r},t)$}{Electric displacement field \nomunit{$C/m^2$}}
+	\nomenclature[C,03]{$\bm{B}(\bm{r},t)$}{Magnetic field \nomunit{$T$}}
+	\nomenclature[C,04]{$\bm{H}(\bm{r},t)$}{Magnetic field intensity \nomunit{$A/m$}}
+	\nomenclature[C,05]{$\bm{A}(\bm{r},t)$}{Magnetic vector potential \nomunit{$T m$}}
+	\nomenclature[C,06]{$\bm{P}(\bm{r},t)$}{Polarisation density \nomunit{$C/m^2$}}
+	\nomenclature[D,01]{$TR$}{Time-reversal}
+	\nomenclature[D,02]{$PT$}{Parity transformation}
+	\nomenclature[D,03]{$FDTD$}{Finite difference time domain}
+	\nomenclature[D,04]{$FDFD$}{Finite difference frequency domain}
